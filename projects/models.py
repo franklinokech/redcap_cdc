@@ -37,8 +37,11 @@ class SyncLog(models.Model):
         choices=SyncStatus,
         default=SyncStatus.PENDING
     )
+    records_expected = models.PositiveIntegerField(default=0)
     records_synced = models.PositiveIntegerField(default=0)
+    records_failed = models.PositiveIntegerField(default=0)
     details = models.TextField(blank=True)
+    error_details = models.JSONField(null=True, blank=True)
     started_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

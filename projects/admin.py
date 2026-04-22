@@ -24,7 +24,10 @@ class SyncLogAdmin(admin.ModelAdmin):
     list_display = (
         "project",
         "status",
+        "records_expected",
         "records_synced",
+        "records_failed",
+        "completion_rate",
         "started_at",
         "ended_at",
         "timestamp",
@@ -41,3 +44,10 @@ class SyncLogAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
+
+    def completion_rate(self, obj):
+        if obj.records_expected:
+            return f"{(obj.records_synced / obj.records_expected) * 100:.1f}%"
+        return "N/A"
+
+    completion_rate.short_description = "Completion Rate"
