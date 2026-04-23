@@ -1,5 +1,6 @@
 from django.contrib import admin
-from projects.models import RedcapProject, SyncLog
+from projects.models import RedcapProject, SyncLog, SyncRecordLog
+
 
 @admin.register(RedcapProject)
 class RedcapProjectAdmin(admin.ModelAdmin):
@@ -51,3 +52,24 @@ class SyncLogAdmin(admin.ModelAdmin):
         return "N/A"
 
     completion_rate.short_description = "Completion Rate"
+
+
+@admin.register(SyncRecordLog)
+class SyncRecordLogAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "sync_log",
+        "record_id",
+        "status",
+        "error",
+        "created_at",
+    )
+
+    list_filter = ("status","error",)
+
+    search_fields = ("record_id", "sync_log__project__name")
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )

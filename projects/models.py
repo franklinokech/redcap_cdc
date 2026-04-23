@@ -51,3 +51,20 @@ class SyncLog(models.Model):
     class Meta:
         ordering = ['-timestamp']
 
+
+class SyncRecordLog(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "PENDING"
+        SUCCESS = "SUCCESS"
+        FAILED = "FAILED"
+
+    sync_log = models.ForeignKey(
+        SyncLog,
+        on_delete=models.CASCADE,
+        related_name="record_logs"
+    )
+    record_id = models.CharField(max_length=50, db_index=True)
+    status = models.CharField(max_length=10, choices=Status.choices)
+    error = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
