@@ -118,28 +118,40 @@ class Command(BaseCommand):
                     break
 
             # -----------------------------
-            # FINAL SUMMARY
+            # FINAL SUMMARY - FIXED SECTION
             # -----------------------------
             duration_total = time.time() - start_time
 
+            # Update the log with counts
             log.records_synced = total_synced
             log.records_failed = total_failed
-            log.ended_at = timezone.now()
-            log.status = "SUCCESS" if total_failed == 0 else "FAILED"
-            log.save()
+
+            # Use the service's _finalize_sync method to properly finish
+            # This will set log.ended_at, log.status, AND update project.last_sync_timestamp
+            log = service._finalize_sync(log)
 
             self.stdout.write("\n" + "=" * 60)
             self.stdout.write(self.style.SUCCESS("📊 FULL SYNC SUMMARY"))
             self.stdout.write(f"Expected: {log.records_expected}")
-            self.stdout.write(f"Synced: {total_synced}")
-            self.stdout.write(f"Failed: {total_failed}")
+            self.stdout.write(f"Synced: {log.records_synced}")
+            self.stdout.write(f"Failed: {log.records_failed}")
+            self.stdout.write(f"Started at: {log.started_at}")
+            self.stdout.write(f"Ended at: {log.ended_at}")
+            self.stdout.write(f"Project last_sync: {project.last_sync_timestamp}")  # Add this to verify
             self.stdout.write(f"Time: {duration_total:.2f}s")
             self.stdout.write("=" * 60)
 
         except Exception as e:
+            # On fatal error, still try to update the timestamp
             log.status = "FAILED"
             log.details = str(e)
+            log.ended_at = timezone.now()
             log.save()
+
+            # Update project timestamp even on failure?
+            # Usually you wouldn't, but for consistency with your service:
+            # project.last_sync_timestamp = log.ended_at
+            # project.save(update_fields=["last_sync_timestamp"])
 
             self.stdout.write(self.style.ERROR("\n❌ FATAL ERROR"))
             self.stdout.write(str(e))
