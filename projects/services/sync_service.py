@@ -1,11 +1,34 @@
 import json
+import logging
 from datetime import timedelta
 
 import requests
+from requests.exceptions import ConnectionError, Timeout, HTTPError
+
 from django.utils import timezone
 
 from projects.models import SyncLog, SyncRecordLog
 
+logger = logging.getLogger("projects")
+
+
+# =====================================================
+# EXCEPTIONS
+# =====================================================
+
+class RetryableSyncError(Exception):
+    """Transient errors (network, 5xx) → safe to retry"""
+    pass
+
+
+class NonRetryableSyncError(Exception):
+    """Bad request / bad data → DO NOT retry"""
+    pass
+
+
+# =====================================================
+# SERVICE
+# =====================================================
 
 class SyncService:
     def __init__(self, project):
@@ -15,14 +38,74 @@ class SyncService:
     # =====================================================
     # ENTRY POINT
     # =====================================================
+
     def run(self, mode="incremental"):
-        if mode == "full":
-            return self.run_full_sync()
-        return self.run_incremental_sync()
+        return (
+            self.run_full_sync()
+            if mode == "full"
+            else self.run_incremental_sync()
+        )
+
+    # =====================================================
+    # HTTP LAYER (CORE FIXED LOGIC)
+    # =====================================================
+
+    def _post(self, url, payload, context=None):
+        context = context or {}
+
+        try:
+            logger.info(
+                "[HTTP REQUEST]",
+                extra={
+                    "url": url,
+                    "context": context,
+                }
+            )
+
+            response = requests.post(url, data=payload, timeout=60)
+            response.raise_for_status()
+            return response
+
+        except (ConnectionError, Timeout) as e:
+            logger.warning(
+                "[HTTP RETRYABLE ERROR]",
+                extra={"error": str(e), "context": context},
+            )
+            raise RetryableSyncError(f"Connection issue: {str(e)}")
+
+        except HTTPError as e:
+            response = getattr(e, "response", None)
+
+            status = getattr(response, "status_code", None)
+            body = getattr(response, "text", str(e))
+
+            error_payload = {
+                "status": status,
+                "body": body,
+                "context": context,
+            }
+
+            if status and status >= 500:
+                logger.warning("[HTTP 5XX]", extra=error_payload)
+                raise RetryableSyncError(error_payload)
+
+            logger.error("[HTTP 4XX]", extra=error_payload)
+            raise NonRetryableSyncError(error_payload)
+
+    def _safe_json(self, response):
+        try:
+            return response.json()
+        except ValueError as e:
+            raise NonRetryableSyncError({
+                "type": "invalid_json",
+                "error": str(e),
+                "body": response.text,
+            })
 
     # =====================================================
     # REDCAP HELPERS
     # =====================================================
+
     def fetch_all_record_ids(self):
         payload = {
             "token": self.project.source_token,
@@ -32,21 +115,19 @@ class SyncService:
             "fields[0]": self.key_field,
         }
 
-        response = requests.post(self.project.source_url, data=payload, timeout=60)
-        response.raise_for_status()
+        response = self._post(
+            self.project.source_url,
+            payload,
+            context={"operation": "fetch_all_record_ids"},
+        )
 
-        data = response.json()
+        data = self._safe_json(response)
 
         return list({
             row[self.key_field]
             for row in data
             if self.key_field in row
         })
-
-    def _chunk(self, items):
-        size = self.project.chunk_size
-        for i in range(0, len(items), size):
-            yield items[i:i + size]
 
     def fetch_records_by_ids(self, record_ids):
         payload = {
@@ -59,10 +140,13 @@ class SyncService:
         for i, rid in enumerate(record_ids):
             payload[f"records[{i}]"] = rid
 
-        response = requests.post(self.project.source_url, data=payload, timeout=60)
-        response.raise_for_status()
+        response = self._post(
+            self.project.source_url,
+            payload,
+            context={"operation": "fetch_records_by_ids", "count": len(record_ids)},
+        )
 
-        return response.json()
+        return self._safe_json(response)
 
     def fetch_logs(self, begin_time=None):
         payload = {
@@ -74,10 +158,13 @@ class SyncService:
         if begin_time:
             payload["beginTime"] = begin_time.strftime("%Y-%m-%d %H:%M")
 
-        response = requests.post(self.project.source_url, data=payload, timeout=60)
-        response.raise_for_status()
+        response = self._post(
+            self.project.source_url,
+            payload,
+            context={"operation": "fetch_logs"},
+        )
 
-        return response.json()
+        return self._safe_json(response)
 
     def extract_changed_records(self, logs):
         return list({
@@ -86,9 +173,15 @@ class SyncService:
             if log.get("record")
         })
 
+    def _chunk(self, items):
+        size = self.project.chunk_size or 100
+        for i in range(0, len(items), size):
+            yield items[i:i + size]
+
     # =====================================================
     # LOGGING
     # =====================================================
+
     def _start_log(self):
         return SyncLog.objects.create(
             project=self.project,
@@ -105,7 +198,7 @@ class SyncService:
         )
 
         if error:
-            log.details = error
+            log.details = json.dumps(error, default=str)
 
         log.save()
         return log
@@ -121,13 +214,11 @@ class SyncService:
             status=SyncRecordLog.Status.FAILED
         ).count()
 
-        # finish log FIRST (sets ended_at)
         log = self._finish_log(
             log,
             success=(log.records_failed == 0)
         )
 
-        # THEN update project checkpoint using the log's ended_at
         self.project.last_sync_timestamp = log.ended_at
         self.project.save(update_fields=["last_sync_timestamp"])
 
@@ -136,6 +227,7 @@ class SyncService:
     # =====================================================
     # TARGET PUSH
     # =====================================================
+
     def push_to_target(self, records):
         payload = {
             "token": self.project.target_token,
@@ -147,13 +239,11 @@ class SyncService:
             "data": json.dumps(records),
         }
 
-        response = requests.post(
+        response = self._post(
             self.project.target_url,
-            data=payload,
-            timeout=60
+            payload,
+            context={"operation": "push_to_target", "count": len(records)},
         )
-
-        response.raise_for_status()
 
         return {
             r[self.key_field]
@@ -164,6 +254,7 @@ class SyncService:
     # =====================================================
     # INCREMENTAL SYNC
     # =====================================================
+
     def run_incremental_sync(self):
         log = self._start_log()
 
@@ -182,45 +273,42 @@ class SyncService:
             log.save()
 
             if not record_ids:
-                # Let _finalize_sync handle timestamp update
                 return self._finalize_sync(log)
 
-            record_log_map = {}
-
-            for rid in record_ids:
-                record_log_map[rid] = SyncRecordLog.objects.create(
+            record_log_map = {
+                rid: SyncRecordLog.objects.create(
                     sync_log=log,
                     record_id=rid,
                     status=SyncRecordLog.Status.PENDING
                 )
+                for rid in record_ids
+            }
 
             for batch in self._chunk(record_ids):
-                try:
-                    records = self.fetch_records_by_ids(batch)
-                    self.push_to_target(records)
+                records = self.fetch_records_by_ids(batch)
+                self.push_to_target(records)
 
-                    for rid in batch:
-                        rec_log = record_log_map.get(rid)
-                        if rec_log:
-                            rec_log.status = SyncRecordLog.Status.SUCCESS
-                            rec_log.save()
-
-                except Exception as e:
-                    for rid in batch:
-                        rec_log = record_log_map.get(rid)
-                        if rec_log:
-                            rec_log.status = SyncRecordLog.Status.FAILED
-                            rec_log.error = str(e)
-                            rec_log.save()
+                for rid in batch:
+                    rec_log = record_log_map.get(rid)
+                    if rec_log:
+                        rec_log.status = SyncRecordLog.Status.SUCCESS
+                        rec_log.save()
 
             return self._finalize_sync(log)
 
+        except RetryableSyncError as e:
+            raise
+
+        except NonRetryableSyncError as e:
+            return self._finish_log(log, success=False, error=e)
+
         except Exception as e:
-            return self._finish_log(log, success=False, error=str(e))
+            raise RetryableSyncError({"unexpected_error": str(e)})
 
     # =====================================================
     # FULL SYNC
     # =====================================================
+
     def run_full_sync(self):
         log = self._start_log()
 
@@ -233,35 +321,32 @@ class SyncService:
             if not record_ids:
                 return self._finalize_sync(log)
 
-            record_log_map = {}
-
-            for rid in record_ids:
-                record_log_map[rid] = SyncRecordLog.objects.create(
+            record_log_map = {
+                rid: SyncRecordLog.objects.create(
                     sync_log=log,
                     record_id=rid,
                     status=SyncRecordLog.Status.PENDING
                 )
+                for rid in record_ids
+            }
 
             for batch in self._chunk(record_ids):
-                try:
-                    records = self.fetch_records_by_ids(batch)
-                    self.push_to_target(records)
+                records = self.fetch_records_by_ids(batch)
+                self.push_to_target(records)
 
-                    for rid in batch:
-                        rec_log = record_log_map.get(rid)
-                        if rec_log:
-                            rec_log.status = SyncRecordLog.Status.SUCCESS
-                            rec_log.save()
-
-                except Exception as e:
-                    for rid in batch:
-                        rec_log = record_log_map.get(rid)
-                        if rec_log:
-                            rec_log.status = SyncRecordLog.Status.FAILED
-                            rec_log.error = str(e)
-                            rec_log.save()
+                for rid in batch:
+                    rec_log = record_log_map.get(rid)
+                    if rec_log:
+                        rec_log.status = SyncRecordLog.Status.SUCCESS
+                        rec_log.save()
 
             return self._finalize_sync(log)
 
+        except RetryableSyncError:
+            raise
+
+        except NonRetryableSyncError as e:
+            return self._finish_log(log, success=False, error=e)
+
         except Exception as e:
-            return self._finish_log(log, success=False, error=str(e))
+            raise RetryableSyncError({"unexpected_error": str(e)})
