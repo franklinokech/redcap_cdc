@@ -27,6 +27,7 @@ class RedcapProject(models.Model):
 class SyncLog(models.Model):
     class SyncStatus(models.TextChoices):
         PENDING = "PE", _("Pending")
+        RUNNING = "RU", _("Running")
         SUCCESS = "SU", _("Success")
         FAILED = "FA", _("Failed")
 
@@ -40,6 +41,8 @@ class SyncLog(models.Model):
     records_expected = models.PositiveIntegerField(default=0)
     records_synced = models.PositiveIntegerField(default=0)
     records_failed = models.PositiveIntegerField(default=0)
+    total_batches = models.IntegerField(default=0)
+    completed_batches = models.IntegerField(default=0)
     details = models.TextField(blank=True)
     error_details = models.JSONField(null=True, blank=True)
     started_at = models.DateTimeField(null=True, blank=True)
@@ -68,3 +71,9 @@ class SyncRecordLog(models.Model):
     error = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["sync_log", "status"]),
+            models.Index(fields=["record_id"]),
+        ]
