@@ -250,5 +250,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
+data_dictionary.csv
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Python,Django,PyCharm,Windows,uv

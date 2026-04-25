@@ -62,6 +62,12 @@ DB + Logs
 
 ## TODO
 
+### Data Quality
+- Schema ingestion
+- Validation engine
+- Record checker
+- Django integration
+
 ### High Priority
 
 -   Structured error schema storage

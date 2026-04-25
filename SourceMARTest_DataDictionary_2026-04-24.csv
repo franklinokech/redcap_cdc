@@ -1,0 +1,712 @@
+﻿"Variable / Field Name","Form Name","Section Header","Field Type","Field Label","Choices, Calculations, OR Slider Labels","Field Note","Text Validation Type OR Show Slider Number","Text Validation Min","Text Validation Max",Identifier?,"Branching Logic (Show field only if...)","Required Field?","Custom Alignment","Question Number (surveys only)","Matrix Group Name","Matrix Ranking?","Field Annotation"
+record_id,mothers_details,,text,"Record ID",,,,,,,,,,,,,
+document_source,mothers_details,,radio,"Document source","1, MAR | 2, Free Text | 3, Both MAR and Freetext",,,,,,,y,,,,,
+hosp_id,mothers_details,,radio,"Hospital ID","72, Pumwani Maternity Hospital | 54, Mbagathi County Hospital | 53, Mama Lucy Kibaki Hospital",,,,,,,y,,,,,
+user_name,mothers_details,,text,"User name",,,,,,y,,y,,,,," @HIDDEN @DEFAULT='[user-name]'"
+user_dag_name,mothers_details,,text,"User dag name",,,,,,y,,y,,,,," @HIDDEN @DEFAULT='[user-dag-name]'"
+user_dag_id,mothers_details,,text,"User dag id",,,,,,y,,y,,,,," @DEFAULT='[user-dag-id]' @HIDDEN"
+user_dag_label,mothers_details,,text,"User dag label",,,,,,y,,y,,,,," @HIDDEN @DEFAULT='[user-dag-label]'"
+user_role_id,mothers_details,,text,"User role id",,,,,,y,,y,,,,," @DEFAULT='[user-role-id]' @HIDDEN"
+user_role_name,mothers_details,,text,"User role name",,,,,,y,,y,,,,," @HIDDEN @DEFAULT='[user-role-name]'"
+user_role_label,mothers_details,,text,"User role label",,,,,,y,,y,,,,," @HIDDEN @DEFAULT='[user-role-label]'"
+data_entry_start_time,mothers_details,,text,"Data entry start time",,,datetime_dmy,,,,,y,,,,," @NOTPAST @NOTFUTURE"
+datetime_entry,mothers_details,,text,"Datetime of data entry",,,datetime_seconds_dmy,,,,,y,,,,," @HIDEBUTTON @HIDDEN @NOW"
+admission_type,mothers_details,,radio,"What is the type of admission?","1, New admission | 2, Readmission from home | 3, Readmission from other facility | 4, Admitted from ANC",,,,,,,y,,,,,
+id_doc_type,mothers_details,,radio,"Identification Document Type","1, National ID | 2, Passport | 3, Birth Certificate | 4, None",,,,,,,y,,,,," @HIDDEN"
+id_no,mothers_details,,text,"Identification Document No.",,,,,,y,"[id_doc_type] = '1' or [id_doc_type] = '2' or [id_doc_type] = '3'",y,,,,," @HIDDEN"
+mfl_code,mothers_details,,text,"MFL Code",,,,,,y,,y,,,,," @HIDDEN"
+mother_name,mothers_details,,text,"Mother's Name",,,,,,y,,y,,,,," @HIDDEN"
+mother_age,mothers_details,,text,"Mother's age",,,integer,10,60,,,y,,,,,
+mother_dob,mothers_details,,text,"Mother's date of birth",,,date_dmy,1965-01-01,,y,,y,,,,," @HIDDEN @PAST @HIDEBUTTON"
+mother_ip_no,mothers_details,,text,"Mother's IP No.",,,,,,y,,y,,,,,
+is_consented,mothers_details,,yesno,"Consented to study?",,,,,,,,y,,,,,
+study_id,mothers_details,,text,"Study ID",,,,,,,"[is_consented] = '1'",y,,,,,
+mother_county,mothers_details,,dropdown,County,"47, Nairobi | 1, Mombasa | 2, Kwale | 3, Kilifi | 4, Tana River | 5, Lamu | 6, Taita-Taveta | 7, Garissa | 8, Wajir | 9, Mandera | 10, Marsabit | 11, Isiolo | 12, Meru | 13, Tharaka-Nithi | 14, Embu | 15, Kitui | 16, Machakos | 17, Makueni | 18, Nyandarua | 19, Nyeri | 20, Kirinyaga | 21, Murang'a | 22, Kiambu | 23, Turkana | 24, West Pokot | 25, Samburu | 26, Trans-Nzoia | 27, Uasin Gishu | 28, Elgeyo-Marakwet | 29, Nandi | 30, Baringo | 31, Laikipia | 32, Nakuru | 33, Narok | 34, Kajiado | 35, Kericho | 36, Bomet | 37, Kakamega | 38, Vihiga | 39, Bungoma | 40, Busia | 41, Siaya | 42, Kisumu | 43, Homa Bay | 44, Migori | 45, Kisii | 46, Nyamira",,autocomplete,,,y,,y,,,,,
+mother_subcounty,mothers_details,,dropdown,Sub-county,"1, STAREHE  SUB COUNTY | 2, DAGORETTI NORTH SUB COUNTY | 3, DAGORETTI SOUTH SUB COUNTY | 4, EMBAKASI CENTRAL SUB COUNTY | 5, EMBAKASI EAST SUB COUNTY | 6, EMBAKASI NORTH SUB COUNTY | 7, EMBAKASI SOUTH SUB COUNTY | 8, EMBAKASI WEST SUB COUNTY | 9, KAMUKUNJI  SUB COUNTY | 10, KASARANI  SUB COUNTY | 11, KIBRA  SUB COUNTY | 12, LANGATA  SUB COUNTY | 13, MAKADARA  SUB COUNTY | 14, MATHARE  SUB COUNTY | 15, ROYSAMBU  SUB COUNTY | 16, RUARAKA  SUB COUNTY | 17, WESTLANDS  SUB COUNTY | 18, AINABKOI SUB COUNTY | 19, AINAMOI | 20, AINAMOI SUB COUNTY | 21, ALDAI SUB COUNTY | 22, ALEGO USONGA SUB COUNTY | 23, ATHI RIVER SUB COUNTY | 24, AWENDO SUB COUNTY | 25, BALAMBALA SUB COUNTY | 26, BANISSA | 27, BARINGO CENTRAL SUB COUNTY | 28, BARINGO NORTH SUB COUNTY | 29, BELGUT SUB COUNTY | 30, BOBASI SUB COUNTY | 31, BOMACHOGE BORABU SUB COUNTY | 32, BOMACHOGE CHACHE SUB COUNTY | 33, BOMET CENTRAL SUB COUNTY | 34, BOMET EAST SUB COUNTY | 35, BONCHARI  SUB COUNTY | 36, BONDO SUB COUNTY | 37, BORABU SUB COUNTY | 38, BUMULA SUB COUNTY | 39, BUNYALA SUB COUNTY | 40, BURA SUB COUNTY | 41, BURETI SUB COUNTY | 42, BUTERE SUB COUNTY | 43, BUTULA SUB COUNTY | 44, BUURI SUB COUNTY | 45, CHANGAMWE SUB COUNTY | 46, CHEPALUNGU SUB COUNTY | 47, CHEPTAIS SUB COUNTY | 48, CHERANGANY SUB COUNTY | 49, CHESUMEI SUB COUNTY | 50, CHUKA SUB COUNTY | 51, DADAAB SUB COUNTY | 52, ELDAS SUB COUNTY | 53, EMGWEN SUB COUNTY | 54, EMUHAYA SUB COUNTY | 55, ENDEBESS SUB COUNTY | 56, FAFI SUB COUNTY | 57, GALOLE SUB COUNTY | 58, GANZE SUB COUNTY | 59, GARBATULLA SUB COUNTY | 60, GARISSA SUB COUNTY | 61, GARSEN SUB COUNTY | 62, GATANGA SUB COUNTY | 63, GATUNDU NORTH SUB COUNTY | 64, GATUNDU SOUTH SUB COUNTY | 65, GEM SUB COUNTY | 66, GILGIL SUB COUNTY | 67, GITHUNGURI SUB COUNTY | 68, HAMISI SUB COUNTY | 69, HOMA BAY TOWN SUB COUNTY | 70, HULUGHO SUB COUNTY | 71, IGAMBANG'OMBE SUB COUNTY | 72, IGEMBE CENTRAL SUB COUNTY | 73, IGEMBE NORTH SUB COUNTY | 74, IGEMBE SOUTH SUB COUNTY | 75, IJARA SUB COUNTY | 76, IKOLOMANI SUB COUNTY | 77, IMENTI CENTRAL SUB COUNTY | 78, IMENTI NORTH SUB COUNTY | 79, IMENTI SOUTH SUB COUNTY | 80, ISIOLO SUB COUNTY | 81, JOMVU  SUB COUNTY | 82, JUJA SUB COUNTY | 83, KABETE SUB COUNTY | 84, KABONDO KASIPUL SUB COUNTY | 85, KABUCHAI SUB COUNTY | 86, KAITI  SUB COUNTY | 87, KAJIADO CENTRAL SUB COUNTY | 88, KAJIADO EAST SUB COUNTY | 89, KAJIADO NORTH SUB COUNTY | 90, KAJIADO WEST SUB COUNTY | 91, KALOLENI SUB COUNTY | 92, KANDARA SUB COUNTY | 93, KANDUYI SUB COUNTY | 94, KANGEMA SUB COUNTY | 95, KANGUNDO SUB COUNTY | 96, KAPSERET SUB COUNTY | 97, KARACHUONYO SUB COUNTY | 98, KASIPUL SUB COUNTY | 99, KATHIANI SUB COUNTY | 100, KEIYO NORTH SUB COUNTY | 101, KEIYO SOUTH SUB COUNTY | 102, KESSES SUB COUNTY | 103, KHWISERO SUB COUNTY | 104, KIAMBAA SUB COUNTY | 105, KIAMBU TOWN SUB COUNTY | 106, KIBISH SUB COUNTY | 107, KIBWEZI EAST  SUB COUNTY | 108, KIBWEZI WEST  SUB COUNTY | 109, KIENI EAST SUB COUNTY | 110, KIENI WEST SUB COUNTY | 111, KIGUMO SUB COUNTY | 112, KIHARU SUB COUNTY | 113, KIKUYU SUB COUNTY | 114, KILIFI NORTH SUB COUNTY | 115, KILIFI SOUTH SUB COUNTY | 116, KILOME SUB COUNTY | 117, KIMILILI SUB COUNTY | 118, KIMININI  SUB COUNTY | 119, KINANGO SUB COUNTY | 120, KINANGOP SUB COUNTY | 121, KIPIPIRI SUB COUNTY | 122, KIPKELION EAST SUB COUNTY | 123, KIPKELION WEST SUB COUNTY | 124, KIRINYAGA CENTRAL SUB COUNTY | 125, KIRINYAGA EAST SUB COUNTY | 126, KIRINYAGA NORTH/MWEA WEST SUB COUNTY | 127, KIRINYAGA SOUTH SUB COUNTY | 128, KIRINYAGA WEST SUB COUNTY | 129, KISAUNI  SUB COUNTY | 130, KISUMU CENTRAL SUB COUNTY | 131, KISUMU EAST SUB COUNTY | 132, KISUMU WEST SUB COUNTY | 133, KITUI CENTRAL  SUB COUNTY | 134, KITUI EAST SUB COUNTY | 135, KITUI RURAL SUB COUNTY | 136, KITUI SOUTH SUB COUNTY | 137, KITUI WEST  SUB COUNTY | 138, KITUTU CHACHE NORTH SUB COUNTY | 139, KITUTU CHACHE SOUTH SUB COUNTY | 140, KOIBATEK SUB COUNTY | 141, KONOIN SUB COUNTY | 142, KURESOI NORTH  SUB COUNTY | 143, KURESOI SOUTH  SUB COUNTY | 144, KURIA EAST SUB COUNTY | 145, KURIA WEST SUB COUNTY | 146, KWANZA  SUB COUNTY | 147, LAFEY | 148, LAGDERA SUB COUNTY | 149, LAIKIPIA EAST SUB COUNTY | 150, LAIKIPIA NORTH SUB COUNTY | 151, LAIKIPIA WEST SUB COUNTY | 152, LAISAMIS | 153, LAMU EAST | 154, LAMU WEST | 155, LARI SUB COUNTY | 156, LIKONI  SUB COUNTY | 157, LIKUYANI SUB COUNTY | 158, LIMURU SUB COUNTY | 159, LOIMA SUB COUNTY | 160, LOITOKITOK SUB COUNTY | 161, LUANDA SUB COUNTY | 162, LUGARI SUB COUNTY | 163, LUNGA LUNGA SUB COUNTY | 164, LURAMBI SUB COUNTY | 165, MACHAKOS SUB COUNTY | 166, MAGARINI SUB COUNTY | 167, MAKUENI  SUB COUNTY | 168, MALAVA SUB COUNTY | 169, MALINDI SUB COUNTY | 170, MANDERA EAST | 171, MANDERA NORTH | 172, MANDERA SOUTH | 173, MANDERA WEST | 174, MANGA SUB COUNTY | 175, MANYATTA  SUB COUNTY | 176, MARAKWET EAST SUB-COUNTY | 177, MARAKWET WEST SUB COUNTY | 178, MARIGAT SUB COUNTY | 179, MASABA NORTH SUB COUNTY | 180, MASINGA SUB COUNTY | 181, MATAYOS SUB COUNTY | 182, MATHIOYA SUB COUNTY | 183, MATHIRA EAST SUB COUNTY | 184, MATHIRA WEST SUB COUNTY | 185, MATUGA SUB COUNTY | 186, MATUNGU SUB COUNTY | 187, MATUNGULU SUB COUNTY | 188, MBEERE NORTH  SUB COUNTY | 189, MBEERE SOUTH  SUB COUNTY | 190, MBITA SUB COUNTY | 191, MBOONI  SUB COUNTY | 192, MERTI SUB COUNTY | 193, MOGOTIO SUB COUNTY | 194, MOIBEN SUB COUNTY | 195, MOLO  SUB COUNTY | 196, MOSOP SUB COUNTY | 197, MOYALE | 198, MSAMBWENI SUB COUNTY | 199, MT ELGON SUB COUNTY | 200, MUHORONI SUB COUNTY | 201, MUKURWEINI SUB COUNTY | 202, MUMIAS EAST SUB COUNTY | 203, MUMIAS WEST  SUB COUNTY | 204, MURANGA SOUTH SUB COUNTY | 205, MUTHAMBI SUB COUNTY | 206, MVITA  SUB COUNTY | 207, MWALA SUB COUNTY | 208, MWATATE SUB COUNTY | 209, MWIMBI SUB COUNTY | 210, MWINGI CENTRAL SUB- COUNTY | 211, MWINGI NORTH SUB COUNTY | 212, MWINGI WEST SUB COUNTY | 213, NAIVASHA  SUB COUNTY | 214, NAKURU EAST  SUB COUNTY | 215, NAKURU NORTH  SUB COUNTY | 216, NAKURU WEST  SUB COUNTY | 217, NAMBALE SUB COUNTY | 218, NANDI EAST SUB COUNTY | 219, NAROK EAST SUB COUNTY | 220, NAROK NORTH SUB COUNTY | 221, NAROK SOUTH SUB COUNTY | 222, NAROK WEST SUB COUNTY | 223, NAVAKHOLO SUB COUNTY | 224, NDARAGWA SUB COUNTY | 225, NDHIWA SUB COUNTY | 226, NJORO  SUB COUNTY | 227, NORTH HORR | 228, NYAKACH SUB COUNTY | 229, NYALI  SUB COUNTY | 230, NYAMIRA NORTH SUB COUNTY | 231, NYAMIRA SUB COUNTY | 232, NYANDO SUB COUNTY | 233, NYARIBARI CHACHE  SUB COUNTY | 234, NYARIBARI MASABA SUB COUNTY | 235, NYATIKE SUB COUNTY | 236, NYERI CENTRAL SUB COUNTY | 237, NYERI SOUTH SUB COUNTY | 238, OLJOROOROK SUB COUNTY | 239, OLKALOU SUB COUNTY | 240, POKOT CENTRAL SUB COUNTY | 241, POKOT NORTH SUB COUNTY | 242, POKOT SOUTH SUB COUNTY | 243, RABAI SUB COUNTY | 244, RANGWE SUB COUNTY | 245, RARIEDA SUB COUNTY | 246, RONGAI  SUB COUNTY | 247, RONGO SUB COUNTY | 248, RUIRU SUB COUNTY | 249, RUNYENJES  SUB COUNTY | 250, SABATIA SUB COUNTY | 251, SABOTI  SUB COUNTY | 252, SAKU | 253, SAMBURU CENTRAL SUB COUNTY | 254, SAMBURU EAST SUB COUNTY | 255, SAMBURU NORTH SUB COUNTY | 256, SAMIA SUB COUNTY | 257, SEME SUB COUNTY | 258, SHINYALU SUB COUNTY | 259, SIGOWET/SOIN SUB COUNTY | 260, SIRISIA SUB COUNTY | 261, SOTIK SUB COUNTY | 262, SOUTH MUGIRANGO SUB COUNTY | 263, SOY SUB COUNTY | 264, SUBA SUB COUNTY | 265, SUBUKIA  SUB COUNTY | 266, SUNA EAST SUB COUNTY | 267, SUNA WEST SUB COUNTY | 268, TARBAJ SUB COUNTY | 269, TAVETA SUB COUNTY | 270, TESO NORTH SUB COUNTY | 271, TESO SOUTH SUB COUNTY | 272, TETU SUB COUNTY | 273, THARAKA NORTH SUB COUNTY | 274, THARAKA SOUTH SUB COUNTY | 275, THIKA TOWN SUB COUNTY | 276, TIATY SUB COUNTY | 277, TIGANIA EAST SUB COUNTY | 278, TIGANIA WEST SUB COUNTY | 279, TINDERET SUB COUNTY | 280, TONGAREN SUB COUNTY | 281, TRANSMARA EAST SUB COUNTY | 282, TRANSMARA WEST SUB COUNTY | 283, TURBO SUB COUNTY | 284, TURKANA CENTRAL SUB COUNTY | 285, TURKANA EAST SUB COUNTY | 286, TURKANA NORTH SUB COUNTY | 287, TURKANA SOUTH SUB COUNTY | 288, TURKANA WEST SUB COUNTY | 289, UGENYA SUB COUNTY | 290, UGUNJA SUB COUNTY | 291, URIRI SUB COUNTY | 292, VIHIGA SUB COUNTY | 293, VOI SUB COUNTY | 294, WAJIR EAST SUB COUNTY | 295, WAJIR NORTH SUB COUNTY | 296, WAJIR SOUTH SUB COUNTY | 297, WAJIR WEST SUB COUNTY | 298, WEBUYE  EAST SUB COUNTY | 299, WEBUYE WEST SUB COUNTY | 300, WEST POKOT SUB COUNTY | 301, WUNDANYI SUB COUNTY | 302, YATTA SUB COUNTY",,autocomplete,,,y,,y,,,,,
+admission_date,mothers_details,,text,"Admission Date",,,date_dmy,[mother_dob],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+admission_time,mothers_details,,text,"Admission Time",,,time,,,,,y,,,,," @HIDEBUTTON"
+admission_time_unit,mothers_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[admission_time] <> 'NI'",y,,,,,
+mother_residence,mothers_details,,text,"Residence (Note nearest landmark)",,,,,,y,,y,,,,,
+mother_mobile,mothers_details,,text,"Mother's mobile number",,,,,,y,,y,,,,," @HIDDEN"
+next_of_kin_name_1,mothers_details,,text,"Next of kin's name (#1)",,,,,,y,,y,,,,," @HIDDEN"
+relationship_to_kin_1,mothers_details,,dropdown,"Relationship to next of kin (#1)","1, Husband | 2, Mother | 3, Father | 4, Sister | 5, Brother | 6, Child | 7, Guardian | 8, Friend | 9, Neighbor | 10, Grandfather | 11, Grandmother | 12, Aunt | 13, Uncle | 14, Cousin | 15, In-law | 16, Niece | 17, Nephew",,,,,,,y,,,,," @HIDDEN"
+next_of_kin_mobile_1,mothers_details,,text,"Next of Kin's mobile number (#1)",,,,,,y,,y,,,,," @HIDDEN"
+id_doc_type_kin_1,mothers_details,,radio,"Next of Kin #1 Identification Document Type","1, National ID | 2, Passport",,,,,,,y,,,,," @HIDDEN"
+id_no_kin_1,mothers_details,,text,"Next of Kin #1 Identification Document No.",,,,,,y,,y,,,,," @HIDDEN"
+relationship_to_kin_oth_1,mothers_details,,text,"Please specify relationship (#1)",,,,,,,"[relationship_to_kin_1] = 'OTH'",y,,,,," @HIDDEN"
+next_of_kin_name_2,mothers_details,,text,"Next of kin's name (#2)",,,,,,y,,y,,,,," @HIDDEN"
+next_of_kin_mobile_2,mothers_details,,text,"Next of Kin's mobile number(#2)",,,,,,y,,y,,,,," @HIDDEN"
+id_doc_type_kin_2,mothers_details,,radio,"Next of Kin #2 Identification Document Type","1, National ID | 2, Passport",,,,,,,y,,,,," @HIDDEN"
+id_no_kin_2,mothers_details,,text,"Next of Kin #2 Identification Document No.",,,,,,y,,y,,,,," @HIDDEN"
+relationship_to_kin_2,mothers_details,,dropdown,"Relationship to next of kin (#2)","1, Husband | 2, Mother | 3, Father | 4, Sister | 5, Brother | 6, Child | 7, Guardian | 8, Friend | 9, Neighbor | 10, Grandfather | 11, Grandmother | 12, Aunt | 13, Uncle | 14, Cousin | 15, In-law | 16, Niece | 17, Nephew",,,,,,,y,,,,," @HIDDEN"
+relationship_to_kin_oth_2,mothers_details,,text,"Please specify relationship (#2)",,,,,,,"[relationship_to_kin_2] = 'OTH'",y,,,,," @HIDDEN"
+marriage_status,mothers_details,,dropdown,"Marriage status","1, Single | 2, Married | 3, Divorced | 4, Widowed",,,,,,,y,,,,,
+marriage_status_other,mothers_details,,text,"Please specify marriage status",,,,,,,"[marriage_status] = 'OTH'",y,,,,,
+education_level,mothers_details,,radio,"Education level","0, None | 1, Primary(KCPE,KPSEA) | 2, Secondary(KCSE,KCBE) | 3, Tertiary(TVET,Undergraguate,Dip, Postgraduate)",,,,,,,y,,,,,
+education_level_other,mothers_details,,text,"Please specify education level",,,,,,,"[education_level] = 'OTH'",y,,,,,
+nationality,mothers_details,,dropdown,Nationality,"KE, Kenya | AF, Afghanistan | AL, Albania | DZ, Algeria | AS, American Samoa | AD, Andorra | AO, Angola | AI, Anguilla | AQ, Antarctica | AG, Antigua And Barbuda | AR, Argentina | AM, Armenia | AW, Aruba | AU, Australia | AT, Austria | AZ, Azerbaijan | BS, Bahamas | BH, Bahrain | BD, Bangladesh | BB, Barbados | BY, Belarus | BE, Belgium | BZ, Belize | BJ, Benin | BM, Bermuda | BT, Bhutan | BO, Bolivia | BA, Bosnia And Herzegovina | BW, Botswana | BV, Bouvet Island | BR, Brazil | IO, British Indian Ocean Territory | BN, Brunei Darussalam | BG, Bulgaria | BF, Burkina Faso | BI, Burundi | KH, Cambodia | CM, Cameroon | CA, Canada | CV, Cape Verde | KY, Cayman Islands | CF, Central African Republic | TD, Chad | CL, Chile | CN, China | CX, Christmas Island | CC, Cocos (Keeling) Islands | CO, Colombia | KM, Comoros | CG, Congo | CD, Congo The Democratic Republic Of The | CK, Cook Islands | CR, Costa Rica | CI, Cote D'Ivoire | HR, Croatia | CU, Cuba | CY, Cyprus | CZ, Czech Republic | DK, Denmark | DJ, Djibouti | DM, Dominica | DO, Dominican Republic | TP, East Timor | EC, Ecuador | EG, Egypt | SV, El Salvador | GQ, Equatorial Guinea | ER, Eritrea | EE, Estonia | ET, Ethiopia | FK, Falkland Islands (Malvinas) | FO, Faroe Islands | FJ, Fiji | FI, Finland | FR, France | GF, French Guiana | PF, French Polynesia | TF, French Southern Territories | GA, Gabon | GM, Gambia | GE, Georgia | DE, Germany | GH, Ghana | GI, Gibraltar | GR, Greece | GL, Greenland | GD, Grenada | GP, Guadeloupe | GU, Guam | GT, Guatemala | GN, Guinea | GW, Guinea-Bissau | GY, Guyana | HT, Haiti | HM, Heard Island And Mcdonald Islands | VA, Holy See (Vatican City State) | HN, Honduras | HK, Hong Kong | HU, Hungary | IS, Iceland | IN, India | ID, Indonesia | IR, Iran, Islamic Republic Of | IQ, Iraq | IE, Ireland | IL, Israel | IT, Italy | JM, Jamaica | JP, Japan | JO, Jordan | KZ, Kazakhstan | KI, Kiribati | KP, Korea, Democratic People's Republic Of | KR, Korea, Republic Of | KV, Kosovo | KW, Kuwait | KG, Kyrgyzstan | LA, Lao People's Democratic Republic | LV, Latvia | LB, Lebanon | LS, Lesotho | LR, Liberia | LY, Libyan Arab Jamahiriya | LI, Liechtenstein | LT, Lithuania | LU, Luxembourg | MO, Macau | MK, Macedonia, The Former Yugoslav Republic Of | MG, Madagascar | MW, Malawi | MY, Malaysia | MV, Maldives | ML, Mali | MT, Malta | MH, Marshall Islands | MQ, Martinique | MR, Mauritania | MU, Mauritius | YT, Mayotte | MX, Mexico | FM, Micronesia, Federated States Of | MD, Moldova, Republic Of | MC, Monaco | MN, Mongolia | MS, Montserrat | ME, Montenegro | MA, Morocco | MZ, Mozambique | MM, Myanmar | NA, Namibia | NR, Nauru | NP, Nepal | NL, Netherlands | AN, Netherlands Antilles | NC, New Caledonia | NZ, New Zealand | NI, Nicaragua | NE, Niger | NG, Nigeria | NU, Niue | NF, Norfolk Island | MP, Northern Mariana Islands | NO, Norway | OM, Oman | PK, Pakistan | PW, Palau | PS, Palestinian Territory, Occupied | PA, Panama | PG, Papua New Guinea | PY, Paraguay | PE, Peru | PH, Philippines | PN, Pitcairn | PL, Poland | PT, Portugal | PR, Puerto Rico | QA, Qatar | RE, Reunion | RO, Romania | RU, Russian Federation | RW, Rwanda | SH, Saint Helena | KN, Saint Kitts And Nevis | LC, Saint Lucia | PM, Saint Pierre And Miquelon | VC, Saint Vincent And The Grenadines | WS, Samoa | SM, San Marino | ST, Sao Tome And Principe | SA, Saudi Arabia | SN, Senegal | RS, Serbia | SC, Seychelles | SL, Sierra Leone | SG, Singapore | SK, Slovakia | SI, Slovenia | SB, Solomon Islands | SO, Somalia | ZA, South Africa | GS, South Georgia And The South Sandwich Islands | ES, Spain | LK, Sri Lanka | SD, Sudan | SR, Suriname | SJ, Svalbard And Jan Mayen | SZ, Swaziland | SE, Sweden | CH, Switzerland | SY, Syrian Arab Republic | TW, Taiwan, Province Of China | TJ, Tajikistan | TZ, Tanzania, United Republic Of | TH, Thailand | TG, Togo | TK, Tokelau | TO, Tonga | TT, Trinidad And Tobago | TN, Tunisia | TR, Turkey | TM, Turkmenistan | TC, Turks And Caicos Islands | TV, Tuvalu | UG, Uganda | UA, Ukraine | AE, United Arab Emirates | GB, United Kingdom | US, United States | UM, United States Minor Outlying Islands | UY, Uruguay | UZ, Uzbekistan | VU, Vanuatu | VE, Venezuela | VN, Viet Nam | VG, Virgin Islands, British | VI, Virgin Islands, U.S. | WF, Wallis And Futuna | EH, Western Sahara | YE, Yemen | ZM, Zambia | ZW, Zimbabwe",,autocomplete,,,,,y,,,,," @HIDDEN"
+religion,mothers_details,,radio,Religion,"0, No Religion | 1, Christianity | 2, Islam | 3, Hinduism | 4, Traditional African Religion",,,,,,,y,,,,," @HIDDEN"
+religion_other,mothers_details,,text,"Please specify religion",,,,,,,"[religion] = 'OTH'",y,,,,," @HIDDEN"
+mother_occupation,mothers_details,,radio,Occupation,"0, Unemployed | 1, Student | 2, Housewife | 3, Casual laborer | 4, Farmer | 5, Self-employed | 6, Salaried employment (informal sector) | 7, Salaried employment (formal sector)",,,,,,,y,,,,,
+mother_occupation_other,mothers_details,,text,"Specify occupation",,,,,,,"[mother_occupation] = 'OTH'",y,,,,,
+payment_method,mothers_details,,radio,Payment,"1, Cash | 2, SHIF | 3, Private Insurance",,,,,,,y,,,,,
+payment_other,mothers_details,,text,"Specify payment method",,,,,,,"[payment_method] = 'OTH'",y,,,,,
+is_referral,mothers_details,,yesno,Referral,,,,,,,,y,,,,,
+referral_type,mothers_details,,radio,"If yes,type?","1, Emergency | 2, Non-emergency",,,,,,"[is_referral] = '1'",y,,,,,
+referring_facility_level,mothers_details,,radio,"Referring facility level","1, Level II | 2, Level III | 3, Level IV | 4, Level V",,,,,,"[is_referral] = '1'",y,,,,,
+referring_facility_name,mothers_details,,text,"Referring facility name",SIMPLE:list_kenya_health_facilities,,,,,y,"[is_referral] = '1'",y,,,,,
+referring_facility_other,mothers_details,,text,"Please specify referring facility name",,,,,,,"[referring_facility_name] = 'OTH'",y,,,,,
+referring_clinician_name,mothers_details,,sql,"Name of referring clinician","SELECT d1.record,
+      CONCAT(d1.value, ' (',
+             (SELECT d2.value
+              FROM redcap_data d2
+              WHERE d2.record = d1.record
+                AND d2.field_name = 'cadre'
+                AND d2.project_id = 976)
+            ,')' ) AS concatenated_value
+FROM redcap_data d1
+WHERE d1.project_id = 976
+  AND d1.field_name = 'clinician_name'
+  AND d1.record IN (
+    SELECT record
+    FROM redcap_data
+    WHERE project_id = 976
+      AND field_name = 'clinician_id'
+  )
+ORDER BY d1.value;",,,,,y,"[is_referral] = '1'",y,,,,," @HIDDEN"
+registering_clerk,mothers_details,,sql,"Name of clerk registering","SELECT d1.record,
+      CONCAT(d1.value, ' (',
+             (SELECT d2.value
+              FROM redcap_data d2
+              WHERE d2.record = d1.record
+                AND d2.field_name = 'cadre'
+                AND d2.project_id = 976)
+            ,')' ) AS concatenated_value
+FROM redcap_data d1
+WHERE d1.project_id = 976
+  AND d1.field_name = 'clinician_name'
+  AND d1.record IN (
+    SELECT record
+    FROM redcap_data
+    WHERE project_id = 976
+      AND field_name = 'clinician_id'
+  )
+ORDER BY d1.value;",,,,,y,,y,,,,,
+date_clerking,mothers_details,,text,"Clerking date",,,date_dmy,[admission_date],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_clerking,mothers_details,,text,"Clerking time",,,time,,,,,y,,,,," @HIDEBUTTON"
+clerking_time_unit,mothers_details,,radio,AM/PM,"1, AM | 2, PM",,,,,,"[date_clerking] <> 'NI'",y,,,,,
+adm_resp_rate,emergency_triage_assessment_at_admission,,text,"Resp Rate(bpm)",,,integer,10,20,,,y,,,,,
+adm_bp_systolic,emergency_triage_assessment_at_admission,,text,"Systolic Blood Pressure(mm Hg)",,,integer,70,200,,,y,,,,,
+adm_bp_diastolic,emergency_triage_assessment_at_admission,,text,"Diastolic Blood Pressure(mm Hg)",,,integer,40,120,,,y,,,,,
+adm_heart_rate,emergency_triage_assessment_at_admission,,text,"Heart Rate(/min)",,,integer,40,160,,,y,,,,,
+adm_spo2,emergency_triage_assessment_at_admission,,text,Sp02(%),,,integer,70,100,,,y,,,,,
+adm_temp,emergency_triage_assessment_at_admission,,text,Temp(°C),,,number,34,41.5,,,y,,,,,
+adm_meows_score,emergency_triage_assessment_at_admission,,text,"MEOWS Score",,,integer,0,20,,,y,,,,," @HIDDEN"
+is_airway_not_patent,emergency_triage_assessment_at_admission,"Obstetric Emergency Assessment",radio,"Airway not patent","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_abnormal_resp_rate,emergency_triage_assessment_at_admission,,radio,"Respiratory Rate (RR) >25 or < 12","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_vaginal_bleeding,emergency_triage_assessment_at_admission,,radio,"Vaginal bleeding","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_abnormal_temp,emergency_triage_assessment_at_admission,,radio,"Temperature > 37.4°C","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_unconscious,emergency_triage_assessment_at_admission,,radio,"Unconscious or alert only on pain","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_convulsing,emergency_triage_assessment_at_admission,,radio,Convulsions/Seizures,"1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_epigastric_pain,emergency_triage_assessment_at_admission,,radio,"Epigastric pain","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_abnormal_heart_rate,emergency_triage_assessment_at_admission,,radio,"Heart Rate (HR) < 60 or >120","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_abnormal_f_heart_rate,emergency_triage_assessment_at_admission,,radio,"Abnormal foetal heart rate","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_headache,emergency_triage_assessment_at_admission,,radio,Headache,"1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_abnormal_systolic_bp,emergency_triage_assessment_at_admission,,radio,"Systolic BP >= 160","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_dysponea,emergency_triage_assessment_at_admission,,radio,"Dyspnoea (shortness of breath)","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_rom_gt_18h,emergency_triage_assessment_at_admission,,radio,"ROM > 18 hours","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_abnormal_diastolic_bp,emergency_triage_assessment_at_admission,,radio,"Diastolic BP >= 110","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_visual_impairment,emergency_triage_assessment_at_admission,,radio,"Visual Impairment","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_body_swelling,emergency_triage_assessment_at_admission,,radio,"Body swelling","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_rom_early,emergency_triage_assessment_at_admission,,radio,"Rupture of membranes at gestation < 37 weeks","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+is_other_obs_emergency,emergency_triage_assessment_at_admission,,radio,"Other obstetric emergency","1, Yes | 0, No",,,,,,,y,,,grp_obstetric_emergency_assessment,,
+other_obst_emergency,emergency_triage_assessment_at_admission,,notes,"Please specify obstetric emergency",,,,,,,"[is_other_obs_emergency] = '1'",y,,,,," @HIDDEN"
+name_triaging_clinician,emergency_triage_assessment_at_admission,,sql,"Name of nurse or clinician triaging","SELECT d1.record,
+      CONCAT(d1.value, ' (',
+             (SELECT d2.value
+              FROM redcap_data d2
+              WHERE d2.record = d1.record
+                AND d2.field_name = 'cadre'
+                AND d2.project_id = 976)
+            ,')' ) AS concatenated_value
+FROM redcap_data d1
+WHERE d1.project_id = 976
+  AND d1.field_name = 'clinician_name'
+  AND d1.record IN (
+    SELECT record
+    FROM redcap_data
+    WHERE project_id = 976
+      AND field_name = 'clinician_id'
+  )
+ORDER BY d1.value;",,,,,y,,y,,,,,
+date_triaging,emergency_triage_assessment_at_admission,,text,"Triaging date",,,date_dmy,[admission_date],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_triaging,emergency_triage_assessment_at_admission,,text,"Triaging time",,,time,,,,,y,,,,," @HIDEBUTTON"
+triaging_time_unit,emergency_triage_assessment_at_admission,,radio,AM/PM,"1, AM | 2, PM",,,,,,"[time_triaging] <> 'NI'",y,,,,," @HIDEBUTTON"
+date_lmp_complete_status,anc_history,,radio,"LMP complete status","1, Complete date | 2, Day missing | 3, Day and month missing | 4, Year missing | 5, Month missing",,,,,,,y,,,,,
+date_lmp,anc_history,,text,LMP,,"If day is missing, use 15th, if month missing, use June, if year missing, mark date as Invalid",date_dmy,2024-01-01,[admission_date],,,y,,,,," @HIDEBUTTON @PAST"
+date_edd_complete_status,anc_history,,radio,"EDD complete status","1, Complete date | 2, Day missing | 3, Day and month missing | 4, Year missing",,,,,,,y,,,,,
+date_edd,anc_history,,text,EDD,,"If day is missing, use 15th, if month missing, use June, if year missing, mark date as Invalid",date_dmy,[date_lmp],,,,y,,,,," @HIDEBUTTON"
+parity_birth,anc_history,,text,"Parity birth(s)",,,integer,0,10,,,y,,,,,
+parity_miscarriages,anc_history,,text,"Parity miscarriage(s)",,,integer,0,10,,,y,,,,,
+para_count,anc_history,,calc,"Parity count","[parity_birth] + [parity_miscarriages]",,,,,,,y,,,,," @HIDDEN"
+gravid_count,anc_history,,text,Gravida,,,integer,0,20,,,y,,,,,
+is_attended_anc,anc_history,,yesno,"Attended ANC?",,,,,,,,y,,,,,
+date_first_anc,anc_history,,text,"Date of first ANC Visit",,,date_dmy,[date_lmp],[admission_date],,"[is_attended_anc] = '1'",y,,,,," @HIDEBUTTON"
+anc_clinic_name,anc_history,,text,"ANC clinic name",SIMPLE:list_kenya_health_facilities,,,,,,"[is_attended_anc] = '1'",y,,,,,
+anc_clinic_name_other,anc_history,,text,"Please specify ANC clinica name",,,,,,,"[anc_clinic_name] = 'OTH'",y,,,,,
+count_anc_visits,anc_history,,text,"ANC no. of visits",,,integer,0,8,,"[is_attended_anc] = '1'",y,,,,,
+is_anc_us,anc_history,,yesno,"ANC ultrasound done?",,,,,,,,y,,,,,
+date_anc_us_first,anc_history,,text,"If yes, date of first scan",,,date_dmy,[date_first_anc],[admission_date],,"[is_anc_us] = '1'",y,,,,," @HIDEBUTTON"
+gestation,anc_history,,text,"Gestational age (in weeks)",,,integer,20,45,,,y,,,,,
+is_gest_lmp,anc_history,,yesno,"Gestation from LMP",,,,,,,,y,,,,,
+gestation_from_lmp,anc_history,,text,"Gestational age (in weeks) using LMP",,,integer,20,45,,"[is_gest_lmp] = '1'",y,,,,,
+is_gest_us,anc_history,,yesno,"Gestation from Ultrasound (if scan < 22 weeks)",,,,,,,,y,,,,,
+gestation_from_us,anc_history,,text,"Gestational age (in weeks) using U/S",,,integer,20,45,,"[is_gest_us] = '1'",y,,,,,
+is_pocus_used,anc_history,,yesno,"U/S done using POCUS?",,,,,,,,y,,,,,
+ultrasound_findings,anc_history,,notes,"Ultrasound findings",,,,,,,,y,,,,," @HIDDEN"
+mother_weight_kg,anc_history,Anthropometrics,text,Weight(kgs),,,number,30,200,,,y,,,,,
+mother_height_cm,anc_history,,text,Height(centimeters),,,number,120,200,,,y,,,,,
+mother_bmi,anc_history,,text,BMI,,,number,12,60,,,y,,,,,
+calculated_bmi,anc_history,,calc,"BMI Calculated","roundup([mother_weight_kg] / ([mother_height_cm]/100)^2, 4)",,,,,,"[mother_weight_kg] > 0 and [mother_height_cm] > 0",,,,,," @READONLY"
+muac,anc_history,,text,MUAC(cm),,,number,15,45,,,y,,,,,
+is_lower_abd_pain,anc_history,"Presenting complaints",radio,"Lower abdominal pain","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_off_vag_discharge,anc_history,,radio,"Offensive vaginal discharge","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_diff_breathing,anc_history,,radio,"Difficulty breathing","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_abd_pain_other,anc_history,,radio,"Abdominal pain (other)","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_screen_tb,anc_history,,radio,"Screen for TB","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_chest_pain,anc_history,,radio,"Chest pain","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_weight_loss,anc_history,,radio,"Weight loss","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_reduced_f_movements,anc_history,,radio,"Reduced foetal movements","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_vomiting,anc_history,,radio,Vomiting,"1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_visual_changes,anc_history,,radio,"Visual changes","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_fever,anc_history,,radio,Fever,"1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_painful_urination,anc_history,,radio,"Painful urination","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_cough_lt_2_wks,anc_history,,radio,"Cough (< 2 weeks)","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_cough_gt_or_equal_2_wks,anc_history,,radio,"Cough (≥2 weeks)","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_drainage_of_amn_fluid,anc_history,,radio,"Drainage of liquor / amniotic fluid","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_oedema,anc_history,,radio,Oedema,"1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+is_other_complaint,anc_history,,radio,"Other complaint","1, Yes | 0, No",,,,,,,y,,,grp_presenting_complaints,,
+date_drainage_of_amn_fluid,anc_history,,text,"If yes, date drainage of liquor / amniotic fluid began?",,,date_dmy,[date_lmp],[admission_date],,"[is_drainage_of_amn_fluid] = '1'",y,,,,," @HIDEBUTTON"
+time_drainage_of_amn_fluid,anc_history,,text,"Time drainage of liquor began",,,time,,,,"[is_drainage_of_amn_fluid] = '1'",y,,,,," @HIDEBUTTON"
+time_drainage_units,anc_history,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[is_drainage_of_amn_fluid] = '1'",y,,,,,
+oedema_location,anc_history,,checkbox,"Specify Oedema location:","0, None | 1, Feet | 2, Ankles | 3, Legs | 4, Abdomen | 5, Chest | 999, Other(specify)",,,,,,"[is_oedema] = '1'",y,,,,," @NONEOFTHEABOVE='0'"
+oedema_location_oth,anc_history,,text,"Specify other oedema location",,,,,,,"[oedema_location(999)] = '1'",y,,,,,
+other_complaints,anc_history,,notes,"Please specify other complaints",,,,,,,"[is_other_complaint] = '1'",y,,,,,
+hb_booking_level,anc_profile,"Full Blood Count",text,"Booking HB level (g/dL)",,,number,3,20,,,y,,,,,
+date_booking_hb,anc_profile,,text,"Date booking HB was done",,,date_dmy,[date_first_anc],[admission_date],,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+rbs_current_level,anc_profile,,text,"Current RBS level (mmol/L)",,,number,3,20,,,y,,,,,
+platelets_count,anc_profile,,text,Platelets(x10^9/L),,,number,10,900,,,y,,,,,
+wbc_count,anc_profile,,text,"White Cell Count (x10^9/L)",,,number,1,40,,,y,,,,,
+is_malaria_rdt,anc_profile,,radio,"Malaria RDT","1, Pos | 0, Neg",,,,,,,y,,,,,
+protein_level,anc_profile,"Urine dipstick",radio,Protein,"1, 0 | 2, + | 3, ++ | 4, +++",,,,,,,y,,,,," @HIDDEN"
+glucose_level,anc_profile,,radio,Glucose,"1, 0 | 2, + | 3, ++ | 4, +++",,,,,,,y,,,,," @HIDDEN"
+leukocytes_level,anc_profile,,radio,Leukocytes,"1, 0 | 2, + | 3, ++ | 4, +++",,,,,,,y,,,,," @HIDDEN"
+ketones_level,anc_profile,,radio,Ketones,"1, 0 | 2, + | 3, ++ | 4, +++",,,,,,,y,,,,," @HIDDEN"
+is_nitrites,anc_profile,,radio,Nitrites,"1, Pos | 0, Neg",,,,,,,y,,,,," @HIDDEN"
+is_blood_pos_neg,anc_profile,,radio,Blood,"1, Pos | 0, Neg",,,,,,,y,,,,," @HIDDEN"
+blood_group_gxm,anc_profile,,radio,"Blood group (GXM)","1, A | 2, B | 3, AB | 4, O",,,,,,,y,,,,,
+blood_group_rh_gxm,anc_profile,,radio,"Rhesus (GXM)","1, Pos | 0, Neg",,,,,,,y,,,,,
+is_anti_d_given,anc_profile,,yesno,"If Rhesus -ve, Anti D Given?",,,,,,,"[blood_group_rh_gxm] = '0'",y,,,,,
+is_indirect_coombs_done,anc_profile,,yesno,"Indirect Coombs test
+done?",,,,,,,,y,,,,," @HIDDEN"
+is_hiv_test_done,anc_profile,,yesno,"HIV test done? ",,,,,,,,y,,,,,
+hiv_test_result,anc_profile,,radio,"If yes,","1, Pos | 0, Neg",,,,,,"[is_hiv_test_done] = '1'",y,,,,,
+date_hiv_test_done,anc_profile,,text,"Date HIV test done?",,,date_dmy,[date_lmp],[admission_date],,"[is_hiv_test_done] = '1'",y,,,,," @HIDEBUTTON"
+is_current_hb_done,anc_profile,,yesno,"HB test done (at admission/current)?",,,,,,,,y,,,,,
+current_hb,anc_profile,,text,"If yes, Current HB(g/dL)",,,number,7,20,,"[is_current_hb_done] = '1'",y,,,,,
+date_current_hb,anc_profile,,text,"Date HB test done",,,date_dmy,[date_first_anc],[admission_date],,"[is_current_hb_done] = '1'",y,,,,," @NOTFUTURE @HIDEBUTTON"
+is_vdrl_test_done,anc_profile,,yesno,"VDRL test done?",,,,,,,,y,,,,,
+vdrl_test_result,anc_profile,,radio,"If yes,","1, Pos | 0, Neg",,,,,,"[is_vdrl_test_done] = '1'",y,,,,,
+date_vdrl_test_done,anc_profile,,text,"Date VDRL test done",,,date_dmy,[date_lmp],[admission_date],,"[is_vdrl_test_done] = '1'",y,,,,," @HIDEBUTTON"
+is_hepatitis_b_test_done,anc_profile,,yesno,"Hepatitis B test done?",,,,,,,,y,,,,,
+hepatitis_b_test_result,anc_profile,,radio,"If yes,","1, Pos | 0, Neg",,,,,,"[is_hepatitis_b_test_done] = '1'",y,,,,,
+date_hepatitis_b_test_done,anc_profile,,text,"Date Hepatitis B test done",,,date_dmy,[date_lmp],[admission_date],,"[is_hepatitis_b_test_done] = '1'",y,,,,," @HIDEBUTTON"
+is_ogtt_test_done,anc_profile,,yesno,"OGTT test done?",,,,,,,,y,,,,,
+ogtt_result,anc_profile,,text,"If yes( mmol/L),",,,number,3,30,,"[is_ogtt_test_done] = '1'",y,,,,,
+date_ogtt_test_done,anc_profile,,text,"Date OGTT test done",,,date_dmy,[date_lmp],[admission_date],,"[is_ogtt_test_done] = '1'",y,,,,," @HIDEBUTTON"
+uec_urea,anc_profile,UECs,text,"Urea (mmol/L)",,,,,,,,y,,,,," @HIDDEN"
+uec_creatinine,anc_profile,,text,"Creatinine (µmol/L)",,,,,,,,y,,,,," @HIDDEN"
+uec_sodium,anc_profile,,text,"Sodium (mmol/L)",,,,,,,,y,,,,," @HIDDEN"
+uec_potassium,anc_profile,,text,"Potassium (mmol/L)",,,,,,,,y,,,,," @HIDDEN"
+coag_pt,anc_profile,"COag Profile",text,"Prothrombin Time (PT) (seconds)",,,,,,,,y,,,,," @HIDDEN"
+coag_aptt,anc_profile,,text,APTT(seconds),,,,,,,,y,,,,," @HIDDEN"
+coag_inr,anc_profile,,text,INR,,,,,,,,y,,,,," @HIDDEN"
+coag_fibrinogen,anc_profile,,text," Fibrinogen (mg/dL)",,,,,,,,y,,,,," @HIDDEN"
+other_applicable_tests,anc_profile,,notes,"Others applicable",,,,,,,,y,,,,," @HIDDEN"
+count_tt_td_vaccine_doses,management_during_antenatal_period,,text,"Number of doses of T.T Tetanus / Diphtheria (T.D) Vaccine",,,integer,0,10,,,y,,,,," @HIDDEN"
+is_on_arvs,management_during_antenatal_period,,yesno,"If HIV +ve, mother on ARVs?",,,,,,,"[hiv_test_result] = '1'",y,,,,,
+arvs_used,management_during_antenatal_period,,radio,"If yes, ARVs used:","1, TDF/3TC/DTG | 2, TDF/3TC/EFV | 3, AZT/3TC/NVP | 4, AZT/3TC/EFV | 5, LPV/r-based | 6, Second-line or Salvage Therapy",,,,,,"[is_on_arvs] = '1'",y,,,,,
+arvs_used_other,management_during_antenatal_period,,notes,"Specify ARVs used",,,,,,,"[arvs_used] = 'OTH'",y,,,,,
+date_arvs_initiation,management_during_antenatal_period,,text,"Date of initiation of ARVs",,,date_dmy,[mother_dob],[admission_date],,"[is_on_arvs] = '1'",y,,,,," @NOTFUTURE @HIDEBUTTON"
+is_vdrl_positive_treatment,management_during_antenatal_period,,yesno,"If VDRL +ve, any treatment initiated?",,,,,,,"[vdrl_test_result] = '1'",y,,,,,
+vdrl_treatment,management_during_antenatal_period,,checkbox,"If Yes, specify:","0, No Treatment | 1, Benzathine Penicillin G (Single Dose) | 2, Benzathine Penicillin G (3 Doses) | 3, Doxycycline | 4, Azithromycin | 5, Erythromycin | 999, Other(specify)",,,,,,"[is_vdrl_positive_treatment] = '1'",y,,,,," @NONEOFTHEABOVE='0'"
+vdrl_treatment_oth,management_during_antenatal_period,,notes,"Please specify other vdrl treatment",,,,,,,"[vdrl_treatment(999)] = '1'",y,,,,,
+is_bp_intervention,management_during_antenatal_period,,yesno,"Any BP intervention?",,,,,,,,y,,,,,
+bp_intervention,management_during_antenatal_period,,checkbox,"If Yes, specify:","0, No Intervention | 1, IV Hydralazine | 2, IV Labetalol | 3, Oral Nifedipine | 4, IV Magnesium Sulfate | 5, IV Fluids | 6, Diuretics (Furosemide) | 999, Other(specify)",,,,,,"[is_bp_intervention] = '1'",y,,,,," @NONEOFTHEABOVE='0'"
+bp_intervention_oth,management_during_antenatal_period,,notes,"Please specify BP intervention",,,,,,,"[bp_intervention(999)] = '1'",y,,,,,
+is_rbs_intervention,management_during_antenatal_period,,yesno,"Any RBS intervention given?",,,,,,,,y,,,,,
+rbs_intervention,management_during_antenatal_period,,checkbox,"If Yes, specify:","0, No Intervention | 1, V Dextrose | 2, Oral Glucose | 3, IV Insulin | 4, ubcutaneous Insulin | 5, Oral Antidiabetics (Metformin) | 6, Dietary Adjustment | 999, Other(specify)",,,,,,"[is_rbs_intervention] = '1'",y,,,,," @NONEOFTHEABOVE='0'"
+rbs_intervention_oth,management_during_antenatal_period,,notes,"Please specify RBS intervention",,,,,,,"[rbs_intervention(999)] = '1'",y,,,,,
+is_hb_intervention,management_during_antenatal_period,,yesno,"Any HB intervention given?",,,,,,,,y,,,,,
+hb_intervention,management_during_antenatal_period,,checkbox,"If Yes, specify:","0, No Intervention | 1, Oral Iron Supplements (Ferrous Sulfate) | 2, IV Iron Therapy | 3, Blood Transfusion | 4, Erythropoietin (EPO) Therapy | 5, Folate Supplementation | 6, Vitamin B12 Injection | 999, Other(specify)",,,,,,"[is_hb_intervention] = '1'",y,,,,," @NONEOFTHEABOVE='0'"
+hb_intervention_oth,management_during_antenatal_period,,notes,"Specify HB intervention",,,,,,,"[hb_intervention(999)] = '1'",y,,,,,
+is_iron_supplements,management_during_antenatal_period,,yesno,"Iron supplements?",,,,,,,,y,,,,,
+is_blood_transfusion,management_during_antenatal_period,,yesno,"Blood transfusion?",,,,,,,,y,,,,,
+is_abnormal_us_intervened,management_during_antenatal_period,,yesno,"Any intervention for abnormal Ultrasound?",,,,,,,,y,,,,,
+is_antibiotics_last_4_wks,management_during_antenatal_period,,yesno,"Antibiotics given in the  last 4 weeks?",,,,,,,,y,,,,,
+is_deworming_in_pregnancy,management_during_antenatal_period,,yesno,"Deworming in this pregnancy?",,,,,,,,y,,,,,
+is_iron_given,management_during_antenatal_period,"Supplements given",radio,Iron,"1, Yes | 0, No",,,,,,,y,,,grp_supplements_given,,
+is_folic_acid_given,management_during_antenatal_period,,radio,"Folic acid","1, Yes | 0, No",,,,,,,y,,,grp_supplements_given,,
+is_calcium_given,management_during_antenatal_period,,radio,Calcium,"1, Yes | 0, No",,,,,,,y,,,grp_supplements_given,,
+is_multivitamins_given,management_during_antenatal_period,,radio,Multivitamins,"1, Yes | 0, No",,,,,,,y,,,grp_supplements_given,,
+is_other_supplements,management_during_antenatal_period,,radio,"Other (specify)","1, Yes | 0, No",,,,,,,y,,,grp_supplements_given,,
+supplements_given_other,management_during_antenatal_period,,notes,"Please specify supplements given",,,,,,,"[is_other_supplements] = '1'",y,,,,,
+is_alcohol_present,management_during_antenatal_period,"Other substances in pregancy",radio,Alcohol,"1, Yes | 0, No",,,,,,,y,,,grp_other_substances_preg,,
+is_cigarette_present,management_during_antenatal_period,,radio,"Cigarette smoking","1, Yes | 0, No",,,,,,,y,,,grp_other_substances_preg,,
+is_chewing_tobacco,management_during_antenatal_period,,radio,"Chewing tobacco","1, Yes | 0, No",,,,,,,y,,,grp_other_substances_preg,,
+is_oth_substances,management_during_antenatal_period,,radio,"Other (specify)","1, Yes | 0, No",,,,,,,y,,,grp_other_substances_preg,,
+substances_in_preg_other,management_during_antenatal_period,,notes,"Please specify other substances in pregnancy",,,,,,,"[is_oth_substances] = '1'",y,,,,,
+is_other_meds_not_ind,management_during_antenatal_period,,yesno,"Other medications for this pregnancy not indicated?",,,,,,,,y,,,,,
+other_meds_not_ind,management_during_antenatal_period,,notes,"Please specify other medications not indicated",,,,,,,"[is_other_meds_not_ind] = '1'",y,,,,,
+other_interventions,management_during_antenatal_period,,notes,"Any other interventions provided?",,,,,,,,y,,,,,
+count_pregs,obstetric_history,,text,"Total number of pregnancies (Include the current)",,,integer,1,20,,,y,,,,,
+pregs_28w_alive,obstetric_history,,text,"Number of pregnancies  ≥ 28 weeks (Born alive)",,,integer,0,10,,,y,,,,,
+pregs_28w_stillborn,obstetric_history,,text,"Number of pregnancies ≥ 28 weeks (Still born)",,,integer,0,10,,,y,,,,,
+pregs_28w_miscarriage,obstetric_history,,text,"Number of pregnancies  < 28 weeks(Miscarriage)",,,integer,0,10,,,y,,,,,
+count_living_children,obstetric_history,,text,"Number of living children",,,integer,0,20,,,y,,,,,
+is_prev_preg_filled,obstetric_history,,yesno," Is previous pregnancy details filled?",,,,,,,,y,,,,,
+prev_year_of_delivery,previous_pregnancy_details,,text,"Year of delivery",,,integer,1975,,,,y,,,,,
+prev_gest,previous_pregnancy_details,,text,"Gestation age (in weeks)",,,integer,20,45,,,y,,,,,
+prev_birth_weight_g,previous_pregnancy_details,,text,"Birth Weight (in grammes)",,,integer,400,6000,,,y,,,,,
+prev_mode_of_delivery,previous_pregnancy_details,,radio,"Mode of delivery","1, SVD | 2, CS | 3, Breech | 4, Forceps | 5, Vacuum",,,,,,,y,,,,,
+prev_outcome,previous_pregnancy_details,,radio,Outcome,"1, D | 2, A | 3, S",,,,,,,y,,,,,
+is_prev_pet,previous_pregnancy_details,,yesno,PET,,,,,,,,y,,,,,
+is_prev_aph,previous_pregnancy_details,,yesno,APH,,,,,,,,y,,,,,
+is_prev_pph,previous_pregnancy_details,,yesno,PPH,,,,,,,,y,,,,,
+is_prev_ur,previous_pregnancy_details,,yesno,UR,,,,,,,,y,,,,,
+is_prev_ppi,previous_pregnancy_details,,yesno,PPI,,,,,,,,y,,,,,
+is_prev_ol,previous_pregnancy_details,,yesno,OL,,,,,,,,y,,,,,
+is_prev_rp,previous_pregnancy_details,,yesno,RP,,,,,,,,y,,,,,
+is_prev_mp,previous_pregnancy_details,,yesno,MP,,,,,,,,y,,,,,
+is_prev_mis,previous_pregnancy_details,,yesno,MIS,,,,,,,,y,,,,,
+is_prev_nbc,previous_pregnancy_details,,yesno,NBC,,,,,,,,y,,,,,
+is_prev_end,previous_pregnancy_details,,yesno,END,,,,,,,,y,,,,,
+is_prev_oth_complications,previous_pregnancy_details,,yesno,Other,,,,,,,,y,,,,,
+oth_complications,previous_pregnancy_details,,text,"Other complications",,,,,,,"[is_prev_oth_complications] = '1'",y,,,,,
+is_cardiac_before_preg,mothers_medical_history,Cardiovascular,yesno,"Cardiac disease before pregnancy?",,,,,,,,y,,,,,
+is_cardiac_during_preg,mothers_medical_history,,yesno,"Cardiac disease during pregnancy?",,,,,,,,y,,,,,
+is_cardiac_during_itp,mothers_medical_history,,yesno,"Cardiac disease during intrapartum?",,,,,,,,y,,,,,
+is_cardiac_during_post_del,mothers_medical_history,,yesno,"Cardiac disease after deliver?",,,,,,,,y,,,,,
+cardiac_comments,mothers_medical_history,,notes,"Comments on cardiac disease",,,,,,,"[is_cardiac_before_preg] = '1' or [is_cardiac_during_preg] = '1'",y,,,,," @HIDDEN"
+is_htn_before_preg,mothers_medical_history,,yesno,"Hypertension before pregnancy?",,,,,,,,y,,,,,
+is_htn_during_preg,mothers_medical_history,,yesno,"Hypertension during pregnancy?",,,,,,,,y,,,,,
+is_htn_during_itp,mothers_medical_history,,yesno,"Hypertension during intrapartum?",,,,,,,,y,,,,,
+is_htn_during_post_del,mothers_medical_history,,yesno,"Hypertension after delivery?",,,,,,,,y,,,,,
+hypertension_comments,mothers_medical_history,,notes,"Comments on hypertension",,,,,,,"[is_htn_before_preg] = '1' or [is_htn_during_preg] = '1'",y,,,,," @HIDDEN"
+is_asthma_before_preg,mothers_medical_history,Respiratory,yesno,"Asthma before pregnancy?",,,,,,,,y,,,,,
+is_asthma_during_preg,mothers_medical_history,,yesno,"Asthma during pregnancy?",,,,,,,,y,,,,,
+is_asthma_during_ipt,mothers_medical_history,,yesno,"Asthma during intrapartum?",,,,,,,,y,,,,,
+is_asthma_during_post_del,mothers_medical_history,,yesno,"Asthma after delivery?",,,,,,,,y,,,,,
+asthma_comments,mothers_medical_history,,notes,"Comments on asthma",,,,,,,"[is_asthma_before_preg] = '1' or [is_asthma_during_preg] = '1'",y,,,,," @HIDDEN"
+is_epilepsy_before_preg,mothers_medical_history,,yesno,"Recurrent seizures/epilepsy before pregnancy?",,,,,,,,y,,,,,
+is_epilepsy_during_preg,mothers_medical_history,,yesno,"Recurrent seizures/epilepsy during pregnancy?",,,,,,,,y,,,,,
+is_epilepsy_during_itp,mothers_medical_history,,yesno,"Recurrent seizures/epilepsy during intrapartum?",,,,,,,,y,,,,,
+is_epilepsy_post_del,mothers_medical_history,,yesno,"Recurrent seizures/epilepsy after delivery?",,,,,,,,y,,,,,
+epilepsy_comments,mothers_medical_history,,notes,"Comments on recurrent seizures/epilepsy",,,,,,,"[is_epilepsy_before_preg] = '1' or [is_epilepsy_during_preg] = '1'",y,,,,," @HIDDEN"
+is_diabetes_before_preg,mothers_medical_history,Endocrine,yesno,"Diabetes before pregnancy?",,,,,,,,y,,,,,
+is_diabetes_during_preg,mothers_medical_history,,yesno,"Diabetes during pregnancy?",,,,,,,,y,,,,,
+is_diabetes_during_itp,mothers_medical_history,,yesno,"Diabetes during intrapartum?",,,,,,,,y,,,,,
+is_diabetes_post_del,mothers_medical_history,,yesno,"Diabetes after delivery?",,,,,,,,y,,,,,
+diabetes_comments,mothers_medical_history,,notes,"Comments on diabetes",,,,,,,"[is_diabetes_before_preg] = '1' or [is_diabetes_during_preg] = '1'",y,,,,," @HIDDEN"
+is_thyroid_before_preg,mothers_medical_history,,yesno,"Thyroid disease before pregnancy?",,,,,,,,y,,,,,
+is_thyroid_during_preg,mothers_medical_history,,yesno,"Thyroid disease during pregnancy?",,,,,,,,y,,,,,
+is_thyroid_during_itp,mothers_medical_history,,yesno,"Thyroid disease during intrapartum?",,,,,,,,y,,,,,
+is_thyroid_post_del,mothers_medical_history,,yesno,"Thyroid disease after delivery?",,,,,,,,y,,,,,
+thyroid_comments,mothers_medical_history,,notes,"Comments on thyroid disease",,,,,,,"[is_thyroid_before_preg] = '1' or [is_thyroid_during_preg] = '1'",y,,,,," @HIDDEN"
+is_sti_before_preg,mothers_medical_history,Infection,yesno,"STI before pregnancy?",,,,,,,,y,,,,,
+is_sti_during_preg,mothers_medical_history,,yesno,"STI during pregnancy?",,,,,,,,y,,,,,
+is_sti_during_itp,mothers_medical_history,,yesno,"STI during intrapartum?",,,,,,,,y,,,,,
+is_sti_post_del,mothers_medical_history,,yesno,"STI after delivery?",,,,,,,,y,,,,,
+sti_comments,mothers_medical_history,,notes,"Comments on STI",,,,,,,"[is_sti_before_preg] = '1' or [is_sti_during_preg] = '1'",y,,,,," @HIDDEN"
+is_renal_before_preg,mothers_medical_history,Renal,yesno,"Renal disease before pregnancy?",,,,,,,,y,,,,,
+is_renal_during_preg,mothers_medical_history,,yesno,"Renal disease during pregnancy?",,,,,,,,y,,,,,
+is_renal_during_itp,mothers_medical_history,,yesno,"Renal disease during intrapartum?",,,,,,,,y,,,,,
+is_renal_post_del,mothers_medical_history,,yesno,"Renal disease after delivery?",,,,,,,,y,,,,,
+renal_disease_comments,mothers_medical_history,,notes,"Comments on Renal Disease",,,,,,,"[is_renal_before_preg] = '1' or [is_renal_during_preg] = '1'",y,,,,," @HIDDEN"
+is_sickle_before_preg,mothers_medical_history,Haematology,yesno,"Sickle cell disease before pregnancy?",,,,,,,,y,,,,,
+is_sickle_during_preg,mothers_medical_history,,yesno,"Sickle cell disease during pregnancy?",,,,,,,,y,,,,,
+is_sickle_during_itp,mothers_medical_history,,yesno,"Sickle cell disease during intrapartum?",,,,,,,,y,,,,,
+is_sickle_post_del,mothers_medical_history,,yesno,"Sickle cell disease after delivery?",,,,,,,,y,,,,,
+sicke_cell_comments,mothers_medical_history,,notes,"Comments on sickle cell disease",,,,,,,"[is_sickle_before_preg] = '1' or [is_sickle_during_preg] = '1'",y,,,,," @HIDDEN"
+is_cervical_before_preg,mothers_medical_history,Neoplasia,yesno,"Cervical cancer before pregnancy?",,,,,,,,y,,,,,
+is_cervical_during_preg,mothers_medical_history,,yesno,"Cervical cancer during pregnancy?",,,,,,,,y,,,,,
+is_cervical_during_itp,mothers_medical_history,,yesno,"Cervical cancer during intrapartum?",,,,,,,,y,,,,,
+is_cervical_post_del,mothers_medical_history,,yesno,"Cervical cancer after delivery?",,,,,,,,y,,,,,
+cervical_cancer_comments,mothers_medical_history,,notes,"Comments on cervical cancer",,,,,,,"[is_cervical_before_preg] = '1' or [is_cervical_during_preg] = '1'",y,,,,," @HIDDEN"
+is_breast_before_preg,mothers_medical_history,,yesno,"Breast cancer before pregnancy?",,,,,,,,y,,,,,
+is_breast_during_preg,mothers_medical_history,,yesno,"Breast cancer during pregnancy?",,,,,,,,y,,,,,
+is_breast_during_itp,mothers_medical_history,,yesno,"Breast cancer during intrapartum?",,,,,,,,y,,,,,
+is_breast_post_del,mothers_medical_history,,yesno,"Breast cancer after delivery?",,,,,,,,y,,,,,
+breast_cancer_comments,mothers_medical_history,,notes,"Comments on breast cancer",,,,,,,"[is_breast_before_preg] = '1' or [is_breast_during_preg] = '1'",y,,,,," @HIDDEN"
+is_depression_before_preg,mothers_medical_history,"Mental Illness",yesno,"Depression before pregnancy?",,,,,,,,y,,,,,
+is_depression_during_preg,mothers_medical_history,,yesno,"Depression during pregnancy?",,,,,,,,y,,,,,
+is_depression_during_itp,mothers_medical_history,,yesno,"Depression during intrapartum?",,,,,,,,y,,,,,
+is_depression_post_del,mothers_medical_history,,yesno,"Depression after delivery?",,,,,,,,y,,,,,
+depression_comments,mothers_medical_history,,notes,"Comments on depression",,,,,,,"[is_depression_before_preg] = '1' or [is_depression_during_preg] = '1'",y,,,,," @HIDDEN"
+other_mothers_med_history,mothers_medical_history,Others,notes,"Other mother's medical history:",,,,,,,,y,,,,," @HIDDEN"
+second_bp_systolic,examination_on_admission,,text,"Second  Systolic BP(at least 4 hours apart if SBP is < 160 or DBP is ≤110 or 15minutes if SBP ≥160, DBP ≥110)",,,integer,70,200,,,y,,,,,
+second_bp_diastolic,examination_on_admission,,text,"Second  Diastolic BP (at least 4 hours apart if SBP is < 160 or DBP is ≤110 or 15minutes if SBP ≥160, DBP ≥110)",,,integer,40,120,,,y,,,,,
+fundal_height_wks,examination_on_admission,"Abdominal examination",text,"Fundal height (weeks)",,,integer,16,42,,,y,,,,,
+foetal_presentation,examination_on_admission,,radio,"Presentation
+","1, Cephalic | 2, Breech | 3, Transverse | 4, Oblique",,,,,,,y,,,,,
+foetal_lie,examination_on_admission,,radio,Lie,"1, Longitudinal | 2, Transverse | 3, Oblique",,,,,,,y,,,,,
+foetal_station,examination_on_admission,,text,Station(cm),,,number,0,5,,,y,,,,,
+foetal_descent,examination_on_admission,,text,Descent(/5),,,number,0,5,,,y,,,,,
+is_fhr_heard,examination_on_admission,,radio,FHR,"1, Heard | 0, Not heard",,,,,,,y,,,,,
+is_twin_preg,examination_on_admission,,yesno,"Twin preganancy?",,,,,,,,y,,,,,
+fhr_heard_per_min,examination_on_admission,,text,"If heard(/min)",,,number,80,200,,"[is_fhr_heard] = '1'",y,,,,,
+fhr_heard_per_min_2,examination_on_admission,,text,"If heard(/min) twin 2",,,number,80,200,,"[is_fhr_heard] = '1' and [is_twin_preg] = '1'",y,,,,,
+fhr_heard_per_min_3,examination_on_admission,,text,"If heard(/min) twin 3",,,number,80,200,,"[is_fhr_heard] = '1' and [is_twin_preg] = '1'",y,,,,,
+external_genitalia_exam,examination_on_admission,"Vaginal examination",checkbox,"External genitalia","0, Normal | 1, Swelling/Edema | 2, Varicosities | 3, Ulcers | 4, Lacerations | 5, Rash | 6, Warts/HPV Lesions | 7, FGM/Circumcision Scarring | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0' @HIDDEN"
+external_genitalia_oth,examination_on_admission,,notes,"Please specify external genitalia exam",,,,,,,"[external_genitalia_exam(999)] = '1'",y,,,,," @HIDDEN"
+vaginal_wall_exam,examination_on_admission,,checkbox,"Vaginal wall","0, Normal | 1, Moist | 2, Dry | 3, Pink | 4, Red | 5, Swollen | 6, Tears | 7, Tender | 8, Warm | 9, Bloody discharge | 10, Hematoma | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0' @HIDDEN"
+vaginal_wall_exam_oth,examination_on_admission,,notes,"Please specify vaginal wall exam",,,,,,,"[vaginal_wall_exam(999)] = '1'",y,,,,," @HIDDEN"
+vaginal_dilatation_cm,examination_on_admission,,text,"Dilatation (cm)",,,number,0,10,,,y,,,,,
+vaginal_length_cm,examination_on_admission,,text,"Length (cm)",,,number,0,12,,,y,,,,,
+cervical_consistency,examination_on_admission,,radio,Consistency,"1, Firm | 2, Medium | 3, Soft | 4, Thin | 5, Thick",,,,,,,y,,,,,
+cervical_consistency_oth,examination_on_admission,,text,"Please specify other consistency",,,,,,,"[cervical_consistency] = 'OTH'",y,,,,,
+cervical_position,examination_on_admission,,radio,Position,"1, Anterior | 2, Posterior | 3, Central",,,,,,,y,,,,,
+is_uterine_scar,examination_on_admission,"Uterine scars",yesno,"Uterine scar",,,,,,,,y,,,,,
+uterine_scar_specify,examination_on_admission,,radio,"If yes (uterine scar), specify:","1, Myomectomy | 2, Caesarean Section",,,,,,"[is_uterine_scar] = '1'",y,,,,,
+uterine_scar_specify_oth,examination_on_admission,,text,"Please specify other uterine scar",,,,,,,"[uterine_scar_specify] = 'OTH'",y,,,,,
+count_uterine_scar,examination_on_admission,,text,"If uterine scar is yes, number:",,,integer,0,9,,"[is_uterine_scar] = '1'",y,,,,,
+is_rom_at_adm,examination_on_admission,ROM,yesno,"Were the membranes already ruptured at the time of admission?",,,,,,,,y,,,,,
+rom_duration_value,examination_on_admission,,text,"If yes, duration of the ROM before admission (hours/days)",,,,,,,"[is_rom_at_adm] = '1'",y,,,,,
+rom_duration_unit,examination_on_admission,,radio,Hours/Days?,"1, Hours | 2, Days",,,,,,"[is_rom_at_adm] = '1'",y,,,,,
+is_liquor_clear,examination_on_admission,Liquor,yesno,"Liquor clear?",,,,,,,,y,,,,,
+is_liquor_offensive,examination_on_admission,,yesno,"Liquor Offensive?",,,,,,,,y,,,,,
+is_meconium_present,examination_on_admission,,yesno,Meconium?,,,,,,,,y,,,,,
+meconium_grade,examination_on_admission,,radio,"If meconium yes,grade","1, Grade 1 | 2, Grade 2 | 3, Grade 3",,,,,,"[is_meconium_present] = '1'",y,,,,,
+is_adm_physical_exam,examination_on_admission,,yesno,"Physical examination done ?",,,,,,,,y,,,,,
+adm_physical_exam,examination_on_admission,,checkbox,"Physical examination on","0, None | 1, Pallor | 2, Jaundice | 3, Oedema | 4, Anaemia | 999, Other(specify)",,,,,,"[is_adm_physical_exam] = '1'",y,,,,,
+maternal_exam_other,examination_on_admission,,notes,"Please specify other examination",,,,,,,"[adm_physical_exam(999)] = '1'",y,,,,,
+other_systematic_findings,examination_on_admission,,notes,"Other systematic findings:",,,,,,,,y,,,,,
+adm_stage_labour,admission_diagnosis,,radio,"Stage of labour at admission","0, Born Before Arrival (BBA) | 1, 1st Stage | 2, 2nd Stage | 3, 3rd Stage | 4, Zero Stage | 5, Fourth Stage | 6, No Labour Signs",,,,,,,y,,,,," @HIDECHOICE='4'"
+delivery_complications,admission_diagnosis,,checkbox,"Delivery complications","0, None | 1, PROM (>= 18hrs) | 2, PET | 3, PET < 34 weeks | 4, PET 34-37 weeks | 5, PET > 37 weeks | 6, PPROM (< 34 weeks) | 7, PPROM (34-37 weeks) | 8, Failed induction | 9, Placenta previa | 10, Dystocia | 11, Gest diabetes | 12, Cord prolapse | 13, Malpresentation | 14, Breech | 15, Uterine rupture | 16, Preterm labour | 17, Obstructed labour | 18, Anaemia | 19, Malnutrition | 20, Chorioamnionitis | 21, APH | 22, IUFD | 23, Eclampsia | 24, Post-term | 25, Retained placenta | 26, PPH | 27, MSL | 28, Multiple birth | 29, Previous scar | 30, Foetal distress | 31, Vaginal warts | 32, Polyhydraminous | 33, POST DATISM | 34, Macrosomia | 35, Caput++ | 36, Ectopic Pregnancy | 37, Oligohidrosis | 38, Abortion/Miscarriage | 39, Cephalopelvic Disproportion | 40, Fibroids in Pregnancy | 41, APL | 42, LPL | 43, Oligohydramnios | 44, Prolonged labour | 45, BOH | 999, Other(specify)",,,,,,,y,,,,," @HIDECHOICE='37' @NONEOFTHEABOVE='0'"
+msl_grade,admission_diagnosis,,radio,"If yes, MSL grade?","1, 1 | 2, 2 | 3, 3",,,,,,"[delivery_complications(27)] = '1'",y,,,,,
+count_multiple_birth,admission_diagnosis,,radio,"If yes, number of births?","1, 2 | 2, 3 | 3, 4 | 4, >4",,,,,,"[delivery_complications(28)] = '1'",y,,,,,
+count_previous_scars,admission_diagnosis,,radio,"If yes, number of previous scars?","1, 1 | 2, 2 | 3, 3 | 4, 4 | 5, >4",,,,,,"[delivery_complications(29)] = '1'",y,,,,,
+fd_assessment_method,admission_diagnosis,,radio,"If yes, foetal distress  based on?","1, Intermittent Auscultation | 2, Standard CTG | 3, Smart CTG",,,,,,"[delivery_complications(30)] = '1'",y,,,,,
+delivery_complication_oth,admission_diagnosis,,notes,"Specify other delivery complications",,,,,,,"[delivery_complications(999)] = '1'",y,,,,,
+adm_management_plan,admission_diagnosis,,checkbox,"Management plan","0, Normal labour | 1, Induce | 2, Augment | 3, Emergency C/S | 4, Steroids | 5, Antibiotics | 6, Oxygen | 7, Antihypertensives | 8, Anticonvulsants | 9, Intermittent ausculation | 10, Standard CTG | 11, Smart CTG | 12, IV Fluids | 13, Resuscitation | 14, Left lateral position | 15, Tocolytic | 16, Blood Transfusion | 17, Bed Rest | 18, Magnesium sulfate | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0'"
+delivery_mngt_plan_oth,admission_diagnosis,,notes,"Please specify management plan",,,,,,,"[adm_management_plan(999)] = '1'",y,,,,,
+admitting_clinician_name,admission_diagnosis,,sql,"Name of admitting clinician or nurse:","SELECT d1.record,
+      CONCAT(d1.value, ' (',
+             (SELECT d2.value
+              FROM redcap_data d2
+              WHERE d2.record = d1.record
+                AND d2.field_name = 'cadre'
+                AND d2.project_id = 976)
+            ,')' ) AS concatenated_value
+FROM redcap_data d1
+WHERE d1.project_id = 976
+  AND d1.field_name = 'clinician_name'
+  AND d1.record IN (
+    SELECT record
+    FROM redcap_data
+    WHERE project_id = 976
+      AND field_name = 'clinician_id'
+  )
+ORDER BY d1.value;",,,,,y,,y,,,,,
+date_sign_admitting_clin,admission_diagnosis,,text,Date,,,date_dmy,[admission_date],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_sign_adm_clinician,admission_diagnosis,,text,Time,,,time,,,,,y,,,,," @HIDEBUTTON"
+adm_clin_sign_time,admission_diagnosis,,radio,AM/PM,"1, AM | 2, PM",,,,,,"[time_sign_adm_clinician] <> 'NI'",y,,,,,
+is_monitoring_chart,admission_diagnosis,,yesno,"Labour and monitoring chart present and filled?",,,,,,,,y,,,,,
+lbr_monitoring_date,labour_and_delivery_monitoring,,text,"Monitroing date",,,date_dmy,[admission_date],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+lbr_monitoring_time,labour_and_delivery_monitoring,,text,"Monitoring time",,,time,,,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+lbr_monitoring_time_unit,labour_and_delivery_monitoring,,radio,AM/PM,"1, AM | 2, PM",,,,,,"[lbr_monitoring_time] <> 'NI'",y,,,,," @HIDEBUTTON"
+monitoring_clinician_name,labour_and_delivery_monitoring,,sql,"Name of monitoring clinician","SELECT d1.record,
+      CONCAT(d1.value, ' (',
+             (SELECT d2.value
+              FROM redcap_data d2
+              WHERE d2.record = d1.record
+                AND d2.field_name = 'cadre'
+                AND d2.project_id = 976)
+            ,')' ) AS concatenated_value
+FROM redcap_data d1
+WHERE d1.project_id = 976
+  AND d1.field_name = 'clinician_name'
+  AND d1.record IN (
+    SELECT record
+    FROM redcap_data
+    WHERE project_id = 976
+      AND field_name = 'clinician_id'
+  )
+ORDER BY d1.value;",,,,,,,y,,,,,
+lbr_presenting_complains,labour_and_delivery_monitoring,,checkbox,"Presenting complaints","0, None | 1, Pain | 2, Contractions | 3, Water breakage | 4, Bleeding | 5, Fetal movement issues | 6, Nausea/Vomiting | 7, Headache | 8, Swelling (hands, feet, face) | 9, Shortness of breath | 10, Urinary issues (pain or difficulty) | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0'"
+lbr_presentingcomplans_oth,labour_and_delivery_monitoring,,notes,"Please specify other complaints",,,,,,,"[lbr_presenting_complains(999)] = '1'",y,,,,,
+lbr_physical_exam,labour_and_delivery_monitoring,,checkbox,"General examination during labour","0, None | 1, Pallor | 2, Jaundice | 3, Oedema | 4, Anaemia | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0'"
+lbr_oedema_location,labour_and_delivery_monitoring,,checkbox,Where,"0, None | 1, Feet | 2, Ankles | 3, Legs | 4, Abdomen | 5, Chest | 999, Other(specify)",,,,,,"[lbr_physical_exam(3)] = '1'",y,,,,,
+lbr_oedema_location_oth,labour_and_delivery_monitoring,,notes,"Specify other oedema location",,,,,,,"[lbr_oedema_location(999)] = '1'",y,,,,,
+lbr_exam_oth,labour_and_delivery_monitoring,,notes,"Please specify other general exam",,,,,,,"[lbr_physical_exam(999)] = '1'",y,,,,,
+lbr_bp_systolic,labour_and_delivery_monitoring,Vitals,text,"Systolic Blood Pressure(mm Hg)",,,integer,70,200,,,y,,,,,
+lbr_bp_diastolic,labour_and_delivery_monitoring,,text,"Diastolic Blood Pressure(mm Hg)",,,integer,40,120,,,y,,,,,
+lbr_spo,labour_and_delivery_monitoring,,text,Sp02(%),,,integer,70,100,,,y,,,,,
+lbr_resp_rate,labour_and_delivery_monitoring,,text,"Resp Rate(bpm)",,,integer,10,20,,,y,,,,,
+lbr_temp,labour_and_delivery_monitoring,,text,Temp(°C),,,number,34,41.5,,,y,,,,,
+lbr_heart_rate,labour_and_delivery_monitoring,,text,"Heart Rate(/min)",,,integer,40,160,,,y,,,,,
+lbr_systematic_findings,labour_and_delivery_monitoring,,notes,"Other systematic findings:",,,,,,,,y,,,,,
+lbr_fhr_monitoring_method,labour_and_delivery_monitoring,,radio,"FHR monitoring","1, Intermittent Auscultation | 2, Standard CTG | 3, Smart CTG",,,,,,,y,,,,,
+is_lbr_fhr_present,labour_and_delivery_monitoring,,yesno,"FHR Present?",,,,,,,,y,,,,,
+lbr_fhr_regularity,labour_and_delivery_monitoring,,radio,"If FHR present, regular/Irregular?","1, Regular | 2, Irregular",,,,,,"[is_lbr_fhr_present] = '1'",y,,,,,
+is_lbr_twin_preg,labour_and_delivery_monitoring,,yesno,"Is twin pregnancy?",,,,,,,,y,,,,,
+lbr_fhr_bpm,labour_and_delivery_monitoring,,text,FHR(/min),,,number,110,160,,"[is_lbr_fhr_present] = '1'",y,,,,,
+lbr_fhr_bpm_2,labour_and_delivery_monitoring,,text,"FHR(/min) twin 2",,,number,110,160,,"[is_lbr_fhr_present] = '1' and [is_lbr_twin_preg] = '1'",y,,,,,
+lbr_fhr_bpm_3,labour_and_delivery_monitoring,,text,"FHR(/min) twin 3",,,number,110,160,,"[is_lbr_fhr_present] = '1' and [is_lbr_twin_preg] = '1'",y,,,,,
+lbr_foetal_presentation,labour_and_delivery_monitoring,"Abdominal exam",radio,"Presentation
+","1, Cephalic | 2, Breech | 3, Transverse | 4, Oblique",,,,,,,y,,,,,
+lbr_foetal_lie,labour_and_delivery_monitoring,,radio,Lie,"1, Longitudinal | 2, Transverse | 3, Oblique",,,,,,,y,,,,,
+lbr_foetal_station,labour_and_delivery_monitoring,,text,Station(cm),,,number,0,5,,,y,,,,,
+lbr_foetal_descent,labour_and_delivery_monitoring,,text,Descent(/5),,,number,0,5,,,y,,,,,
+is_lbr_contractions,labour_and_delivery_monitoring,,yesno,Contractions,,,,,,,,y,,,,,
+lbr_vaginal_dilatation_cm,labour_and_delivery_monitoring,"Vaginal exam (5 columns bishop score)",text,"Dilatation (cm)",,,number,0,10,,,y,,,,,
+lbr_vaginal_length_cm,labour_and_delivery_monitoring,,text,"Length (cm)",,,number,0,12,,,y,,,,,
+cervical_consistency_lbr,labour_and_delivery_monitoring,,radio,Consistency,"1, Firm | 2, Medium | 3, Soft | 4, Thin | 5, Thick",,,,,,,y,,,,,
+cervical_consistcy_lb_oth,labour_and_delivery_monitoring,,text,"Please specify other consistency",,,,,,,"[cervical_consistency_lbr] = 'OTH'",y,,,,,
+cervical_position_lbr,labour_and_delivery_monitoring,,radio,Position,"1, Anterior | 2, Posterior | 3, Central",,,,,,,y,,,,,
+is_lbr_vaginal_discharge,labour_and_delivery_monitoring,,yesno,"Vaginal discharge",,,,,,,,y,,,,,
+lbr_vaginal_disch_type,labour_and_delivery_monitoring,,radio,"Vaginal discharge type","1, Show | 2, Liquor | 3, Blood",,,,,,"[is_lbr_vaginal_discharge] = '1'",y,,,,,
+lbr_discharge_oth,labour_and_delivery_monitoring,,text,"Please specify vaginal discharge",,,,,,,"[lbr_vaginal_disch_type] = 'OTH'",y,,,,,
+is_lbr_liquor_clear,labour_and_delivery_monitoring,,yesno,"Liquor clear?",,,,,,,"[lbr_vaginal_disch_type] = '2'",y,,,,,
+is_lbr_msl,labour_and_delivery_monitoring,,yesno,MSL,,,,,,,"[lbr_vaginal_disch_type] = '2'",y,,,,,
+lbr_msl_grade,labour_and_delivery_monitoring,,radio,"If yes, MSL grade?","1, 1 | 2, 2 | 3, 3",,,,,,"[is_lbr_msl] = '1'",y,,,,,
+is_lbr_liq_smelling,labour_and_delivery_monitoring,,yesno,"Foul smelling",,,,,,,"[lbr_vaginal_disch_type] = '2'",y,,,,,
+lbr_stage_labour,labour_and_delivery_monitoring,,radio,"Stage of labour","1, 1st Stage | 2, 2nd Stage | 3, 3rd Stage",,,,,,,y,,,,,
+lbr_diag,labour_and_delivery_monitoring,,checkbox,Diagnosis,"0, Normal labour | 1, PET | 2, 2PROM | 3, PPROM | 4, Dystocia | 5, Placenta previa | 6, Cord prolapse | 7, Breech | 8, Obstructed labour | 9, Preterm labour | 10, IUFD | 11, APH | 12, Retained placenta | 13, PPH | 14, Malpresentation | 15, Eclampsia | 16, Uterine rapture | 17, Chorioamnionitis | 18, Failed induction | 19, MSL | 20, Foetal distress | 21, Cephalopelvic Disproportion | 22, Fibroids in Pregnancy | 23, Previous Scar | 24, Gest diabetes | 25, Anaemia | 26, Malnutrition | 27, Post-term | 28, Multiple birth | 29, Vaginal warts | 30, Polyhydraminous | 31, POST DATISM | 32, Macrosomia | 33, Caput++ | 34, Ectopic Pregnancy | 35, Oligohidrosis | 36, Abortion/Miscarriage | 37, APL | 38, LPL | 39, Oligohydramnios | 40, Prolonged labour | 41, BOH | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0'"
+msl_grade_lbr,labour_and_delivery_monitoring,,radio,"If yes, grade?","1, Grade 1 | 2, Grade 2 | 3, Grade 3",,,,,,"[lbr_diag(19)] = '1'",y,,,,,
+lbr_fd_assessment_method,labour_and_delivery_monitoring,,radio,"If yes, foetal distress based on","1, Intermittent Auscultation | 2, Standard CTG | 3, Smart CTG",,,,,,"[lbr_diag(20)] = '1'",y,,,,,
+oth_diag_lbr,labour_and_delivery_monitoring,,notes,"Please specify diagnosis",,,,,,,"[lbr_diag(999)] = '1'",y,,,,,
+is_lbr_arm_performed,labour_and_delivery_monitoring,"Interventions prescribed",yesno,ARM,,,,,,,,y,,,,,
+is_lbr_augmented,labour_and_delivery_monitoring,,yesno,"Labour augmented",,,,,,,,y,,,,,
+is_lbr_aug_oxitocin,labour_and_delivery_monitoring,,yesno,Oxytocin,,,,,,,"[is_lbr_augmented] = '1'",y,,,,,
+is_lbr_induced,labour_and_delivery_monitoring,,yesno,"Labour Induction",,,,,,,,y,,,,,
+lbr_induction_type,labour_and_delivery_monitoring,,radio,"Induction type","1, Prostaglandin | 2, Mechanical | 3, Combined",,,,,,"[is_lbr_induced] = '1'",y,,,,,
+is_misoprostol_lbr,labour_and_delivery_monitoring,,yesno,Misoprostol,,,,,,,"[lbr_induction_type] = '1'",y,,,,,
+misoprostol_lbr_route,labour_and_delivery_monitoring,,radio,Route,"1, Vaginal | 2, Oral | 3, Sublingual",,,,,,"[is_misoprostol_lbr] = '1'",y,,,,,
+is_glandin_lbr,labour_and_delivery_monitoring,,yesno,Glandin,,,,,,,"[lbr_induction_type] = '1'",y,,,,,
+glandin_lbr_route,labour_and_delivery_monitoring,,radio,Route,"1, Vaginal | 2, Oral | 3, Sublingual",,,,,,"[is_glandin_lbr] = '1'",y,,,,,
+is_vagiprost_lbr,labour_and_delivery_monitoring,,yesno,Vagiprost,,,,,,,"[lbr_induction_type] = '1'",y,,,,,
+vagiprost_lbr_route,labour_and_delivery_monitoring,,radio,Route,"1, Vaginal | 2, Oral | 3, Sublingual",,,,,,"[is_vagiprost_lbr] = '1'",y,,,,,
+lbr_induction_uterotonics,labour_and_delivery_monitoring,,radio,"If yes,uterotonics","1, Oxytocin | 2, Misoprostol",,,,,,"[is_lbr_induced] = '1'",y,,,,,
+lbr_inductn_uterotonc_oth,labour_and_delivery_monitoring,,notes,"Please specify uterotonic used",,,,,,,"[lbr_induction_uterotonics] = 'OTH'",y,,,,,
+lbr_interventions_pres,labour_and_delivery_monitoring,,checkbox,"Interventions prescribed","0, Normal delivery | 1, Antibiotics | 2, Antihypertensives | 3, Dexamethasone | 4, Blood transfusion | 5, Assisted vaginal delivery | 6, Emergency CS | 7, Induce | 8, Augment | 9, Steroids | 10, Oxygen | 11, Anticonvulsants | 12, Intermittent auscultation | 13, Standard CTG | 14, Smart CTG | 15, IV Fluids | 16, Resuscitation | 17, Left lateral position | 18, Tocolytic | 19, Bed Rest | 20, Magnesium sulfate | 999, Other(specify)",,,,,,,y,,,,,
+lbr_interventions_pres_oth,labour_and_delivery_monitoring,,notes,"Please specify intervention",,,,,,,"[lbr_interventions_pres(999)] = '1'",y,,,,,
+mode_of_delivery,delivery_details,,radio,"Mode of delivery","1, SVD | 2, CS | 3, Breech | 4, Forceps | 5, Vacuum",,,,,,,y,,,,,
+type_of_birth,delivery_details,,radio,"Type of birth","1, Single | 2, Twin | 3, Multiple",,,,,,,y,,,,,
+number_multiple_birth,delivery_details,,text,"Number of multiple births",,,integer,3,10,,[type_of_birth]='3',y,,,,,
+csection_type,delivery_details,,radio,"Caesarean Section type","1, Elective | 2, Emergency",,,,,,"[mode_of_delivery] = '2'",y,,,,,
+indication_for_cs,delivery_details,,checkbox,"Indications for Caesarean Section","1, None | 2, Previous uterine scar | 3, Pre-eclampsia (PET) - Unspecified | 4, Pre-eclampsia (PET) - Early onset (< 34 weeks) | 5, Pre-eclampsia (PET) - Late onset (34-37 weeks) | 6, Pre-eclampsia (PET) - Term (>37 weeks) | 7, Eclampsia | 8, Antepartum Haemorrhage (APH) - Unspecified | 9, Placenta Praevia | 10, Placental Abruption | 11, Contracted pelvis / Cephalopelvic disproportion (CPD) | 12, Severe medical illness (Cardiac/Respiratory/Neurological) | 13, Gestational Diabetes / Pre-gestational Diabetes | 14, Maternal anaemia (Severe) | 15, Maternal malnutrition | 16, Dystocia (Failure to progress) | 17, Prolonged labour | 18, Obstructed labour | 19, Preterm labour with malpresentation | 20, Failed induction of labour | 21, Premature rupture of membranes (PROM >=18hrs) | 22, Preterm premature rupture of membranes (PPROM < 34 weeks) | 23, Preterm premature rupture of membranes (PPROM 34-37 weeks) | 24, Chorioamnionitis | 25, Fetal distress / Pathological CTG | 26, Cord prolapse | 27, Malpresentation (Breech / Transverse / Oblique) | 28, Breech presentation | 29, Multiple gestation (Twins/Triplets) | 30, Post-term pregnancy (Postdatism) | 31, Fetal macrosomia | 32, Oligohydramnios | 33, Polyhydramnios | 34, Fetal anomalies (Hydrocephalus/Sacral tumour) | 35, Maternal infections (HIV / HSV / HBV / Vaginal warts) | 36, Meconium-stained liquor (MSL) | 37, Uterine rupture (Confirmed/Impending) | 38, Previous successful fistula repair | 39, Fibroids in pregnancy (Obstructing) | 40, Bad obstetric history (BOH) | 41, Previous infertility / Assisted conception | 42, Maternal request (Non-medical) | 43, PMTCT | 999, Other (specify)",,,,,,"[mode_of_delivery] = '2'",y,,,,," @NONEOFTHEABOVE='1'"
+indication_for_cs_oth,delivery_details,,notes,"Specify other indications for CS",,,,,,,"[indication_for_cs(999)] = '1'",y,,,,,
+intra_ops_diag,delivery_details,,checkbox,"Intra-Operative Diagnosis","1, No abnormal intra-operative findings | 2, Uterine scar dehiscence (incomplete separation with intact serosa) | 3, Uterine rupture (complete separation of all uterine layers) | 4, Bladder injury / bladder laceration | 5, Ureteral injury | 6, Bowel injury | 7, Uterine atony (poor uterine contractility) | 8, Placenta accreta (abnormally adherent placenta) | 9, Placenta increta (placenta invades myometrium) | 10, Placenta percreta (placenta invades through uterine serosa) | 11, Adhesions - mild (peritoneal / omental) | 12, Adhesions - moderate | 13, Adhesions - severe / frozen pelvis | 14, Broad ligament hematoma | 15, Retroperitoneal hematoma | 16, Rectus sheath hematoma | 17, Vesico-uterine hematoma (< 4 cm) | 18, Vesico-uterine hematoma (>=4 cm) | 19, Ovarian cyst - benign appearance (specify type if known) | 20, Ovarian tumor - suspicious for malignancy | 21, Ovarian torsion | 22, Fibroids (leiomyoma) - not previously diagnosed | 23, Fibroids - obstructing lower segment | 24, Tubal pathology (hydrosalpinx / pyosalpinx) | 25, Pelvic adhesions from previous infection/PID | 26, Endometriosis deposits | 27, Uterine anomaly (bicornuate / septate / unicornuate uterus) | 28, Couvelaire uterus (uteroplacental apoplexy) | 29, Extension of uterine incision (cervical / vaginal / broad ligament) | 30, Angular pregnancy / cornual pregnancy | 31, Molar pregnancy (hydatidiform mole) | 32, Retained products of conception (incomplete delivery) | 33, Meconium-stained liquor (MSL) - thin | 34, Meconium-stained liquor (MSL) - thick / particulate | 35, Oligohydramnios (reduced amniotic fluid) | 36, Polyhydramnios (excess amniotic fluid) | 37, Amniotic band(s) | 38, True knot in umbilical cord | 39, Nuchal cord (cord around neck) - loose | 40, Nuchal cord (cord around neck) - tight | 41, Cord hematoma | 42, Single umbilical artery (two-vessel cord) | 43, Velamentous cord insertion | 44, Vasa praevia (fetal vessels crossing membranes) | 45, Placental infarction(s) | 46, Placental calcification - excessive / grade III | 47, Placental abruption (retroplacental clot) | 48, Succenturiate lobe (accessory placental lobe) | 49, Circumvallate placenta | 50, Placenta membranacea | 51, Chorioamnionitis (cloudy/offensive liquor) | 52, Intra-abdominal free fluid - clear | 53, Intra-abdominal free fluid - blood-stained / hemoperitoneum | 54, Intra-abdominal free fluid - purulent | 55, Uterine scar endometriosis | 56, Abdominal wall endometriosis | 57, Incisional hernia (pre-existing) | 58, Previous mesh from prior surgery | 999, Other intra-operative finding (specify)",,,,,,"[mode_of_delivery] = '2'",y,,,,," @NONEOFTHEABOVE='1'"
+intra_ops_diag_oth,delivery_details,,notes,"Other Intra-Operative Diagnosis",,,,,,,"[intra_ops_diag(999)] = '1'",y,,,,,
+date_cs_decision_made,delivery_details,,text,"Date CS decision made",,,date_dmy,[admission_date],,,"[mode_of_delivery] = '2'",y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_cs_decision_made,delivery_details,,text,"Time CS decision made",,,time,,,,"[mode_of_delivery] = '2'",y,,,,," @HIDEBUTTON"
+time_cs_decision_made_unit,delivery_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[mode_of_delivery] = '2'",y,,,,,
+date_cs_initiated,delivery_details,,text,"Date CS initiated",,,date_dmy,[date_cs_decision_made],,,"[mode_of_delivery] = '2'",y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_cs_initiated,delivery_details,,text,"Time CS initiated",,,time,,,,"[mode_of_delivery] = '2'",y,,,,," @HIDEBUTTON"
+time_cs_initiated_unit,delivery_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[mode_of_delivery] = '2'",y,,,,,
+date_delivery,delivery_details,,text,"Date of delivery",,,date_dmy,[admission_date],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_delivery,delivery_details,,text,"Time of delivery",,,time,,,,,y,,,,," @HIDEBUTTON"
+time_delivery_unit,delivery_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,,y,,,,,
+is_placenta_complete,delivery_details,,yesno,"Placenta Complete",,,,,,,,y,,,,,
+placenta_delivery_method,delivery_details,,radio,"Placenta delivery method","1, Removed manually | 2, Controlled cord traction",,,,,,"[is_placenta_complete] = '1'",y,,,,,
+placenta_weight_grams,delivery_details,,text,"Placenta weight (in grams)",,,number,100,700,,"[is_placenta_complete] = '1'",y,,,,," @HIDDEN"
+is_active_pv_bleeding,delivery_details,,yesno,"Active PV bleeding",,,,,,,,y,,,,,
+estimated_blood_loss,delivery_details,,radio,"If yes, estimated blood loss","1, <500mls | 2, 500mls to 1000mls | 3, >1000mls",,,,,,"[is_active_pv_bleeding] = '1'",y,,,,,
+is_clots,delivery_details,,yesno,Clots,,,,,,,"[is_active_pv_bleeding] = '1'",y,,,,,
+count_abdominal_packs,delivery_details,,text,"Abdominal packs",,,integer,0,100,,"[is_active_pv_bleeding] = '1'",y,,,,," @HIDDEN"
+count_gauzes,delivery_details,,text,Gauzes,,,integer,10,50,,"[is_active_pv_bleeding] = '1'",y,,,,," @HIDDEN"
+count_drapes_soaked,delivery_details,,text,"Drapes soaked",,,integer,0,50,,"[is_active_pv_bleeding] = '1'",y,,,,," @HIDDEN"
+is_perineal_tear,delivery_details,,yesno,"Perineal tear",,,,,,,,y,,,,,
+perineal_tear_grade,delivery_details,,radio,"If yes, grade","1, Grade 1 | 2, Grade 2 | 3, Grade 3 | 4, Grade 4",,,,,,"[is_perineal_tear] = '1'",y,,,,,
+is_episiotomy,delivery_details,,yesno,Episiotomy,,,,,,,,y,,,,,
+is_tear_episiotmy_repaired,delivery_details,,yesno,"Tear or episiotomy repaired",,,,,,,"[is_episiotomy] = '1'",y,,,,,
+episiotomy_repair_location,delivery_details,,radio,"Repair Location","1, Repaired bedside | 2, Repaired in theatre",,,,,,"[is_tear_episiotmy_repaired] = '1'",y,,,,,
+is_uterotonic_used,delivery_details,,yesno,"Uterotonic used",,,,,,,,y,,,,,
+uterotonic_used,uterotonic_details,,radio,Uterotonic,"1, Oxytocin | 2, Carbetocin | 3, Tranexamic | 4, Cytotec",,,,,,,y,,,,,
+uterotonic_dose_1,uterotonic_details,,text,"Dose 1",,,number,0,500,,,y,,,,,
+uterotonic_dose_1_units,uterotonic_details,,radio,"Dose 1 units","1, IU | 2, µg | 3, mg",,,,,,"[uterotonic_dose_1] > 0",y,,,,," @HIDDEN"
+uterotonic_dose1_rt,uterotonic_details,,radio,"Dose 1 Route","1, IM | 2, IV",,,,,,"[uterotonic_dose_1] > 0",y,,,,," @HIDDEN"
+uterotonic_dose1_date,uterotonic_details,,text,"Date initiated",,,date_dmy,[admission_date],,,"[uterotonic_dose_1] > 0",y,,,,," @NOTFUTURE @HIDEBUTTON"
+uterotonic_dose1_time_init,uterotonic_details,,text,"Time initiated",,,time,,,,"[uterotonic_dose_1] > 0",y,,,,," @HIDEBUTTON"
+uterotonic_dose1_time_unit,uterotonic_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[uterotonic_dose_1] > 0",y,,,,,
+uterotonic_dose_2,uterotonic_details,,text,"Dose 2",,,number,0,500,,,y,,,,,
+uterotonic_dose_2_units_2,uterotonic_details,,radio,"Dose 2 units","1, IU | 2, µg | 3, mg",,,,,,"[uterotonic_dose_2] > 0",y,,,,," @HIDDEN"
+uterotonic_dose2_rt_2,uterotonic_details,,radio,"Dose 2 Route","1, IM | 2, IV",,,,,,"[uterotonic_dose_2] > 0",y,,,,," @HIDDEN"
+uterotonic_dose1_date_2,uterotonic_details,,text,"Date initiated",,,date_dmy,[admission_date],,,"[uterotonic_dose_2] > 0",y,,,,," @NOTFUTURE @HIDEBUTTON"
+uterotonic_dose2_time_init,uterotonic_details,,text,"Time initiated",,,time,,,,"[uterotonic_dose_2] > 0",y,,,,," @HIDEBUTTON"
+uterotonic_dose2_time_unit,uterotonic_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[uterotonic_dose_2] > 0",y,,,,,
+uterotonic_dose_3,uterotonic_details,,text,"Dose 3",,,number,0,500,,,y,,,,,
+uterotonic_dose_3_units_3,uterotonic_details,,radio,"Dose 3 units","1, IU | 2, µg | 3, mg",,,,,,"[uterotonic_dose_3] > 0",y,,,,," @HIDDEN"
+uterotonic_dose3_rt_3,uterotonic_details,,radio,"Dose 3 Route","1, IM | 2, IV",,,,,,"[uterotonic_dose_3] > 0",y,,,,," @HIDDEN"
+uterotonic_dose1_date_3,uterotonic_details,,text,"Date initiated",,,date_dmy,[admission_date],,,"[uterotonic_dose_3] > 0",y,,,,," @NOTFUTURE @HIDEBUTTON"
+uterotonic_dose3_time_init,uterotonic_details,,text,"Time initiated",,,time,,,,"[uterotonic_dose_3] > 0",y,,,,," @HIDEBUTTON"
+uterotonic_dose3_time_unit,uterotonic_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[uterotonic_dose_3] > 0",y,,,,,
+is_oth_complications_post,post_delivery,,yesno,"Other maternal complications post delivery",,,,,,,,y,,,,,
+oth_complications_post,post_delivery,,notes,"Please specify other maternal complications post delivery",,,,,,,"[is_oth_complications_post] = '1'",y,,,,,
+duration_first_stage_hrs,post_delivery,,text,"Duration of 1st stage(hrs)",,,integer,0,48,,,y,,,,,
+duration_first_stage_mins,post_delivery,,text,"Duration of 1st stage(mins)",,,integer,0,59,,,y,,,,,
+duration_second_stage_hrs,post_delivery,,text,"Duration of 2nd stage(hrs)",,,integer,0,48,,,y,,,,,
+duration_second_stage_mins,post_delivery,,text,"Duration of 2nd stage(mins)",,,integer,0,59,,,y,,,,,
+duration_third_stage_hrs,post_delivery,,text,"Duration of 3rd stage(hrs)",,,integer,0,48,,,y,,,,,
+duration_third_stage_mins,post_delivery,,text,"Duration of 3rd stage(mins)",,,integer,0,59,,,y,,,,,
+post_del_spo2,post_delivery,"Post delivery vitals",text,Sp02(%),,,integer,70,100,,,y,,,,,
+post_del_rr,post_delivery,,text,"Resp Rate(bpm)",,,integer,10,20,,,y,,,,,
+post_del_temp,post_delivery,,text,Temp(°C),,,number,34,41.5,,,y,,,,,
+post_del_hr,post_delivery,,text,"Heart Rate(/min)",,,integer,40,160,,,y,,,,,
+post_bp_systolic,post_delivery,,text,"Systolic Blood Pressure(mm Hg)",,,integer,70,200,,,y,,,,,
+post_bp_diastolic,post_delivery,,text,"Diastolic Blood Pressure(mm Hg)",,,integer,40,120,,,y,,,,,
+management_plan,post_delivery,"Management plan",checkbox,"Management plan","0, None | 1, Monitor vital signs (BP, Pulse, Temperature, Respiratory rate) | 2, Assess uterine contraction and fundal height | 3, Monitor vaginal bleeding (Lochia) and check for postpartum hemorrhage | 4, Administer uterotonics (e.g., Oxytocin 10 IU IM or IV) | 5, Provide pain relief (e.g., Paracetamol, Ibuprofen) | 6, Initiate early breastfeeding (within the first hour) | 7, Administer Vitamin K to newborn | 8, Ensure newborn receives immunizations (BCG, OPV, Hepatitis B) | 9, Educate mother on postpartum warning signs (excessive bleeding, fever, severe pain) | 10, Schedule postnatal follow-up (Day 7 and 6 weeks) | 11, Administer TEO to newborn | 999, Other(specify)",,,,,,,y,,,,," @NONEOFTHEABOVE='0'"
+management_plan_oth,post_delivery,,notes,"Please specify other management plan",,,,,,,"[management_plan(999)] = '1'",y,,,,,
+birth_notification_no,post_delivery,,text,"Birth Notification No.",,,,,,y,,y,,,,," @HIDDEN"
+date_birth_notification,post_delivery,,text,"Date of Notification",,,date_dmy,[date_delivery],,,,y,,,,," @HIDEBUTTON @HIDDEN"
+is_notified,post_delivery,,yesno,Notified?,,,,,,,,y,,,,," @HIDDEN"
+maternal_date_discharge,post_delivery,"Discharge summary",text,"Date of discharge",,,date_dmy,[date_delivery],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_maternal_discharge,post_delivery,,text,"Time of discharge",,,time,,,,,y,,,,," @HIDEBUTTON"
+maternal_time_disch_unit,post_delivery,,radio,AM/PM?,"1, AM | 2, PM",,,,,,,y,,,,,
+maternal_outcome,post_delivery,,radio,"Maternal outcome at discharge","1, Alive | 2, Dead | 3, Referred | 4, Discharged Against Medical Advice | 5, Absconded",,,,,,,y,,,,,
+maternal_discharge_dx,post_delivery,,radio,"Discharge diagnosis","1, Normal delivery (POST SUD) | 2, Surgical delivery (POST C/S) | 3, Medical Mx of pregnancy complication",,,,,,,y,,,,,
+maternal_discharge_dx_oth,post_delivery,,notes,"Please specify other discharge diagnosis",,,,,,,"[maternal_discharge_dx] = 'OTH'",,,,,,
+is_mat_disch_meds,post_delivery,,yesno,"Has discharge medications?",,,,,,,,y,,,,,
+mat_disch_meds,post_delivery,,notes,"Discharge meds",,,,,,,"[is_mat_disch_meds] = '1'",y,,,,,
+mat_followup_date,post_delivery,,text,"Follow up date",,,date_dmy,[maternal_date_discharge],,,,y,,,,," @HIDDEN @HIDEBUTTON"
+has_baby_nbu_nicu,post_delivery,,yesno,"Has  a Baby Transferred to NBU/NICU?",,,,,,,,y,,,,," @HIDDEN"
+discharging_clinician_name,post_delivery,,text,"Discharging clinician name",,,,,,,,y,,,,,
+newborn_id,newborn_details,,text,"Birth number",,,integer,1,5,,,y,,,,,
+delivery_outcome,newborn_details,,radio,"Delivery Outcome","1, Born alive | 2, Fresh stillbirth | 3, Macerated stillbirth",,,,,,,y,,,,,
+newborn_date_of_birth,newborn_details,,text,"Date of Birth",,,date_dmy,[date_delivery],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+newborn_time_of_birth,newborn_details,,text,"Time of Birth",,,time,,,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+newborn_t_of_birth_units,newborn_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+child_sex,newborn_details,,radio,"Child sex","1, Male | 2, Female | 3, Indeterminate",,,,,,,y,,,,,
+birth_weight_grams,newborn_details,,text,"Birth Weight (grams)",,,integer,400,6000,,,y,,,,,
+apgar_1min,newborn_details,,text,"1-minute APGAR",,,integer,0,10,,"[delivery_outcome] = '1'",y,,,,,
+apgar_5min,newborn_details,,text,"5-minute APGAR",,,integer,0,10,,"[delivery_outcome] = '1'",y,,,,,
+apgar_10min,newborn_details,,text,"10-minute APGAR",,,integer,0,10,,"[delivery_outcome] = '1'",y,,,,,
+lactate_levels,newborn_details,,text,Lactate(mmol/L),,,number,0.5,20,,,y,,,,,
+is_birth_asyphyxia,newborn_details,,yesno,"Birth asphyxia",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+child_head_circum_cm,newborn_details,,text,"Head circumference(in cm)",,,number,25,42,,"[delivery_outcome] = '1'",y,,,,,
+child_lenght_cm,newborn_details,,text,"Baby's length (cm)",,,number,30,60,,"[delivery_outcome] = '1'",y,,,,,
+is_resuscitation_required,newborn_details,,yesno,"Resuscitation required",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+resuscitation_type,newborn_details,,radio," Type of resuscitation","1, BVM only | 2, BVM and chest compressions",,,,,,"[is_resuscitation_required] = '1'",y,,,,,
+resuscitation_type_oth,newborn_details,,text,"Please specify resuscitation type",,,,,,,"[resuscitation_type] = 'OTH'",y,,,,,
+is_alive_after_resus,newborn_details,,yesno,"Alive post-resuscitation?",,,,,,,"[is_resuscitation_required] = '1'",y,,,,,
+post_resuscitation_care,newborn_details,,radio,"If alive post-resuscitation, stabilisation care
+","1, O₂ via nasal prongs | 2, O₂ via NRM | 3, CPAP",,,,,,"[is_alive_after_resus] = '1'",y,,,,,
+post_resusc_outcome_oth,newborn_details,,notes,"Please specify post-resuscitation/stabilisation",,,,,,,"[post_resuscitation_care] = 'OTH'",y,,,,,
+is_transferred_nbu,newborn_details,,yesno,"Tranferred to NBU?",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+date_transfer_nbu,newborn_details,,text,"Date baby transferred to NBU",,,date_dmy,[date_delivery],,,"[is_transferred_nbu] = '1'",y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_transfer_nbu,newborn_details,,text,"Time baby transferred to NBU",,,time,,,,"[is_transferred_nbu] = '1'",y,,,,," @HIDEBUTTON"
+time_transfer_nbu_unit,newborn_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[is_transferred_nbu] = '1'",y,,,,,
+is_transferred_nicu,newborn_details,,yesno,"Tranferred to NICU?",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+date_transfer_nicu,newborn_details,,text,"Date baby transferred to NICU",,,date_dmy,[date_delivery],,,"[is_transferred_nicu] = '1'",y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_transfer_nicu,newborn_details,,text,"Time baby transferred to NICU",,,time,,,,"[is_transferred_nicu] = '1'",y,,,,," @HIDEBUTTON"
+time_transfer_nicu_unit,newborn_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[is_transferred_nicu] = '1'",y,,,,,
+is_transferred_postnatal,newborn_details,,yesno,"Baby transfered to postnatal",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+date_transfer_postnatal,newborn_details,,text,"Date baby transferred to postnatal ward",,,date_dmy,[date_delivery],,,"[is_transferred_postnatal] = '1'",y,,,,," @NOTFUTURE @HIDEBUTTON"
+time_transferpostnatal,newborn_details,,text,"Time baby transferred to  postnatal ward",,,time,,,,"[is_transferred_postnatal] = '1'",y,,,,," @HIDEBUTTON"
+time_transfer_postnatal,newborn_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[is_transferred_postnatal] = '1'",y,,,,,
+is_skin_to_skin,newborn_details,"Hypothermia prevention methods",radio,Skin-to-skin,"1, Yes | 0, No",,,,,,"[delivery_outcome] = '1'",y,,,grp_hypo_prevention,,
+is_plastic_wrap,newborn_details,,radio,"Plastic wrap","1, Yes | 0, No",,,,,,"[delivery_outcome] = '1'",y,,,grp_hypo_prevention,,
+is_radiant_warmer,newborn_details,,radio,"Radiant warmer","1, Yes | 0, No",,,,,,"[delivery_outcome] = '1'",y,,,grp_hypo_prevention,,
+is_hypo_prevent_oth,newborn_details,,radio,"Other (specify)","1, Yes | 0, No",,,,,,"[delivery_outcome] = '1'",y,,,grp_hypo_prevention,,
+hypo_preven_oth,newborn_details,,notes,"Please specify hypothermia prevention",,,,,,,"[is_hypo_prevent_oth] = '1'",y,,,,,
+is_breastfeeding_init,newborn_details,,yesno,"Initiation of Breastfeeding",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+is_vitamin_k_administered,newborn_details,,yesno,"Vitamin K Administered",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+is_teo_administered,newborn_details,,yesno,"TEO Administered",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+is_chx,newborn_details,,yesno,"Chlorhexidine Administered",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+is_baby_put_on_o2,newborn_details,,yesno,"Baby put on Oxygen",,,,,,,"[delivery_outcome] = '1'",y,,,,,
+is_congenital_anomaly,newborn_details,,yesno,"Congenital Anomaly?",,,,,,,,y,,,,,
+note_congenital_anomaly,newborn_details,,notes,"Congenital anomaly details",,,,,,,"[is_congenital_anomaly] = '1'",y,,,,,
+has_birth_injury,newborn_details,,yesno,"Birth injury?",,,,,,,,y,,,,,
+note_birth_injury,newborn_details,,notes,"Birth injury details",,,,,,,"[has_birth_injury] = '1'",y,,,,,
+nbu_redcap_id,newborn_details,"<div class=""rich-text-field-label""><p>Newborn Discharge Summary</p></div>",text,"Newborn REDCAP ID From CIN-Neonatal Booklet",,"This number is written on top of the file",integer,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+date_adm_nbu,newborn_details,,text,"Date of Admission into NBU",,,date_dmy,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,," @HIDEBUTTON"
+time_adm_nbu,newborn_details,,text,"Time of Admission into NBU",,,time,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,," @HIDEBUTTON"
+time_adm_nbu_unit,newborn_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+newborn_ipno_new,newborn_details,,text,"Newborn IPNO",,,,,,y,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+newborn_date_discharge_new,newborn_details,,text,"Date of discharge",,,date_dmy,[date_delivery],,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_newborn_discharge_new,newborn_details,,text,"Time of discharge",,,time,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,," @HIDEBUTTON"
+newborn_time_disch_unit_new,newborn_details,,radio,AM/PM?,"1, AM | 2, PM",,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+newborn_outcome_new,newborn_details,,radio,"Newborn outcome at discharge","1, Alive | 2, Dead | 3, Referred | 4, Discharged Against Medical Advice",,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+nbu_transfer_reasons,newborn_details,,checkbox,"Reasons for referral to NBU","0, Well baby | 1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(specify)","Get data from Internal Transfer Form",,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+adm_reasons_ba_severeity,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,"[nbu_transfer_reasons(1)] = '1'",y,,,,,
+nbu_transfer_reason_oth,newborn_details,,text,"Specify other reasons for referral to NBU",SIMPLE:list_icd_11,,,,,,"[nbu_transfer_reasons(999)] = '1'",y,,,,,
+nbu_transfer_reason_oth_2,newborn_details,,text,"Specify other reasons for referral to NBU 2",SIMPLE:list_icd_11,,,,,,"[nbu_transfer_reasons(999)] = '1'",,,,,,
+nbu_transfer_reason_oth_3,newborn_details,,text,"Specify other reasons for referral to NBU 3",SIMPLE:list_icd_11,,,,,,"[nbu_transfer_reasons(999)] = '1'",,,,,,
+is_pri_newborn_adm_dx_new,newborn_details,,yesno,"Clear primary admission diagnosis",,,,,,,"[is_transferred_nbu] = '1'",y,,,,,
+newborn_primary_adm_diag_new,newborn_details,,radio,"Newborn primary admission diagnosis","0, Well baby | 1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(specify)",,,,,,"[is_pri_newborn_adm_dx_new] = '1'",y,,,,,
+newborn_pri_adm_diag_oth_new,newborn_details,,text,"Please specify other primary admission diagnosis",SIMPLE:list_icd_11,,,,,,"[newborn_primary_adm_diag_new] = '999'",y,,,,,
+newborn_pri_adm_diag_oth_new_2,newborn_details,,text,"Please specify other primary admission diagnosis 2",SIMPLE:list_icd_11,,,,,,"[newborn_primary_adm_diag_new] = '999'",,,,,,
+newborn_pri_adm_diag_oth_new_3,newborn_details,,text,"Please specify other primary admission diagnosis 3",SIMPLE:list_icd_11,,,,,,"[newborn_primary_adm_diag_new] = '999'",,,,,,
+adm_dx_ba_severeity,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,"[newborn_primary_adm_diag_new] = '1'",y,,,,,
+newborn_adm_diag_new,newborn_details,,checkbox,"Admission Diagnoses","0, Well baby | 1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(Specify)",,,,,,"[is_pri_newborn_adm_dx_new] = '0'",y,,,,,
+newborn_adm_dx_oth,newborn_details,,text,"Specify admission diagnoses",SIMPLE:list_icd_11,,,,,,"[newborn_adm_diag_new(999)] = '1'",y,,,,,
+newborn_adm_dx_oth_2,newborn_details,,text,"Specify admission diagnoses 2",SIMPLE:list_icd_11,,,,,,"[newborn_adm_diag_new(999)] = '1'",,,,,,
+newborn_adm_dx_oth_3,newborn_details,,text,"Specify admission diagnoses 3",SIMPLE:list_icd_11,,,,,,"[newborn_adm_diag_new(999)] = '1'",,,,,,
+adm_dx_ba_severeity_2,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,"[newborn_adm_diag_new(1)] = '1'",y,,,,,
+is_sec_newborn_adm_dx_new,newborn_details,,yesno,"Has secondary admission diagnosis",,,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+newborn_sec_adm_diag_new,newborn_details,,checkbox,"Newborn secondary admission diagnosis","1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(specify)",,,,,,"[is_sec_newborn_adm_dx_new] = '1'",y,,,,,
+newborn_adm_dx_oth_new,newborn_details,,text,"Please specify other admission diagnosis",SIMPLE:list_icd_11,,,,,,"[newborn_sec_adm_diag_new(999)] = '1'",y,,,,,
+newborn_adm_dx_oth_new_2,newborn_details,,text,"Please specify other admission diagnosis 2",SIMPLE:list_icd_11,,,,,,"[newborn_sec_disch_diag_new(999)] = '1'",,,,,,
+newborn_adm_dx_oth_new_3,newborn_details,,text,"Please specify other admission diagnosis 3",SIMPLE:list_icd_11,,,,,,"[newborn_sec_disch_diag_new(999)] = '1'",,,,,,
+adm_dx_sec_ba_severeity,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,[newborn_sec_adm_diag_new(1)]='1',y,,,,,
+is_pri_newborn_disch_dx_new,newborn_details,,yesno,"Clear primary discharge diagnosis",,,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+newborn_primary_disch_diag_new,newborn_details,,radio,"Newborn primary discharge diagnosis","0, Well baby | 1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(specify)",,,,,,"[is_pri_newborn_disch_dx_new] = '1'",y,,,,,
+newborn_pri_disch_diag_oth_new,newborn_details,,text,"Please specify other primary discharge diagnosis",SIMPLE:list_icd_11,,,,,,"[newborn_primary_disch_diag_new] = '999'",y,,,,,
+newborn_pri_disch_diag_oth_new_2,newborn_details,,text,"Please specify other primary discharge diagnosis 2",SIMPLE:list_icd_11,,,,,,"[newborn_primary_disch_diag_new] = '999'",,,,,,
+newborn_pri_disch_diag_oth_new_3,newborn_details,,text,"Please specify other primary discharge diagnosis 3",SIMPLE:list_icd_11,,,,,,"[newborn_primary_disch_diag_new] = '999'",,,,,,
+adm_dsc_ba_severeity,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,"[newborn_primary_disch_diag_new] = '1'",y,,,,,
+newborn_disch_diag_new_2,newborn_details,,checkbox,"Newborn discharge diagnoses","1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(specify)",,,,,,"[is_pri_newborn_disch_dx_new] = '0'",y,,,,,
+is_sec_newborn_disch_dx_new,newborn_details,,yesno,"Has secondary discharge diagnosis",,,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,,
+newborn_sec_disch_diag_new,newborn_details,,checkbox,"Newborn secondary discharge diagnoses","1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 12, Chest Indrawing | 13, Grunting | 14, TTN | 15, Hypoglycemia | 16, Hypothermia | 17, Hypoxic-Ischemic Encephalopathy (HIE) | 18, Poor Feeding | 19, SERO Exposed | 20, Chorioamnionitis | 21, Multiple Gestation | 22, POST DATISM | 999, Other(specify)",,,,,,"[is_sec_newborn_disch_dx_new] = '1'",y,,,,,
+dsc_dx_sec_ba_severeity,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,[newborn_sec_disch_diag_new(1)]='1',y,,,,,
+newborn_discharge_dx_oth_new,newborn_details,,text,"Please specify other discharge diagnoses",SIMPLE:list_icd_11,,,,,,"[newborn_sec_disch_diag_new(999)] = '1'",y,,,,,
+newborn_discharge_dx_oth_new_2,newborn_details,,text,"Please specify other discharge diagnoses 2",SIMPLE:list_icd_11,,,,,,"[newborn_sec_disch_diag_new(999)] = '1'",,,,,,
+newborn_discharge_dx_oth_new_3,newborn_details,,text,"Please specify other discharge diagnoses 3",SIMPLE:list_icd_11,,,,,,"[newborn_sec_disch_diag_new(999)] = '1'",,,,,,
+newborn_dsc_ba_severeity_2,newborn_details,,radio,"Birth Asphyxia Severeity","0, None | 1, Mild Birth Asphyxia | 2, Moderate Birth Asphyxia | 3, Severe Birth Asphyxia | 4, Unspecified",,,,,,"[newborn_disch_diag_new_2(1)] = '1'",y,,,,,
+is_newbron_disch_meds_new,newborn_details,,yesno,"Has discharge medications?",,,,,,,"[is_transferred_nbu] = '1' or [is_transferred_nicu] = '1'",y,,,,," @HIDDEN"
+newborn_disch_meds_new,newborn_details,,notes,"Discharge meds",,,,,,,"[is_newbron_disch_meds_new] = '1'",y,,,,," @HIDDEN"
+mat_data_entry_end_time,newborn_details,,text,"Maternal Data entry end time",,,datetime_dmy,,,,,y,,,,," @NOTPAST @NOTFUTURE"
+mat_data_entry_dur_min,newborn_details,,calc,"Maternal Data entry duration(mins)","roundup(datediff([data_entry_start_time],[mat_data_entry_end_time],""m""), 1)",,,,,,,,,,,," @READONLY"
+newborn_ipno,newborn_discharge_summary,,text,"Newborn IPNO",,,,,,y,,y,,,,,
+newborn_date_discharge,newborn_discharge_summary,,text,"Date of discharge",,,date_dmy,[date_delivery],,,,y,,,,," @HIDEBUTTON @NOTFUTURE"
+time_newborn_discharge,newborn_discharge_summary,,text,"Time of discharge",,,time,,,,,y,,,,," @HIDEBUTTON"
+newborn_time_disch_unit,newborn_discharge_summary,,radio,AM/PM?,"1, AM | 2, PM",,,,,,,y,,,,,
+newborn_outcome,newborn_discharge_summary,,radio,"Newborn outcome at discharge","1, Alive | 2, Dead | 3, Referred | 4, Discharged Against Medical Advice",,,,,,,y,,,,,
+is_pri_newborn_disch_dx,newborn_discharge_summary,,yesno,"Clear primary discharge diagnosis",,,,,,,,y,,,,,
+newborn_primary_disch_diag,newborn_discharge_summary,,radio,"Newborn primary discharge diagnosis","0, Well baby | 1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia",,,,,,,y,,,,,
+newborn_pri_disch_diag_oth,newborn_discharge_summary,,text,"Please specify other primary discharge diagnosis",,,,,,,"[newborn_primary_disch_diag] = 'OTH'",y,,,,," @HIDDEN"
+newborn_sec_disch_diag,newborn_discharge_summary,,checkbox,"Newborn secondary discharge diagnoses","1, Birth Asphyxia | 2, Preterm | 3, LBW | 4, Newborn RDS | 5, Neonatal Sepsis | 6, Jaundice | 7, Anaemia | 8, Meningitis | 9, Congenital Anomaly | 10, Meconium Aspiration | 11, Macrosomia | 999, Other(specify)",,,,,,,y,,,,,
+newborn_discharge_dx_oth,newborn_discharge_summary,,notes,"Please specify other discharge diagnoses",,,,,,,"[newborn_sec_disch_diag(999)] = '1'",y,,,,," @HIDDEN"
+is_newbron_disch_meds,newborn_discharge_summary,,yesno,"Has discharge medications?",,,,,,,,y,,,,," @HIDDEN"
+newborn_disch_meds,newborn_discharge_summary,,notes,"Discharge meds",,,,,,,"[is_newbron_disch_meds] = '1'",y,,,,," @HIDDEN"
+newborn_disch_clinician,newborn_discharge_summary,,sql,"Discharging clinician name","SELECT d1.record,
+      CONCAT(d1.value, ' (',
+             (SELECT d2.value
+              FROM redcap_data d2
+              WHERE d2.record = d1.record
+                AND d2.field_name = 'cadre'
+                AND d2.project_id = 976)
+            ,')' ) AS concatenated_value
+FROM redcap_data d1
+WHERE d1.project_id = 976
+  AND d1.field_name = 'clinician_name'
+  AND d1.record IN (
+    SELECT record
+    FROM redcap_data
+    WHERE project_id = 976
+      AND field_name = 'clinician_id'
+  )
+ORDER BY d1.value;",,,,,,,y,,,,,
+nb_data_entry_end_time,newborn_discharge_summary,,text,"Data entry end time",,,datetime_dmy,,,,,y,,,,," @NOTPAST @NOTFUTURE"
+nb_data_entry_dur_min,newborn_discharge_summary,,calc,"Newborn Data entry duration(mins)","roundup(datediff([data_entry_start_time],[nb_data_entry_end_time],""m""), 1)",,,,,,,,,,,," @READONLY"
