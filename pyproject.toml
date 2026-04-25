@@ -16,3 +16,12 @@ dependencies = [
     "redis>=7.4.0",
     "requests>=2.33.1",
 ]
+
+[dependency-groups]
+dev = [
+    "faker>=40.15.0",
+    "hypothesis>=6.152.2",
+    "pandas>=3.0.2",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+]

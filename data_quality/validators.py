@@ -1,35 +1,63 @@
+# validators.py
 from dataclasses import dataclass
-from typing import Dict, Any, List, Optional
-from datetime import datetime, date
+from typing import Dict, Any, List, Optional, Tuple
+from datetime import datetime
 import re
 import operator
+import warnings
 
 
 @dataclass
 class FieldSchema:
+    # =====================================================
+    # IDENTITY
+    # =====================================================
     field_name: str
-    field_type: str = "text"
-    required: bool = False
-    branching_logic: Optional[str] = None
-    min_value: Optional[float] = None
-    max_value: Optional[float] = None
-    choices: Optional[Dict[str, str]] = None
+    form_name: Optional[str] = None
+    field_label: Optional[str] = None
+
+    # =====================================================
+    # TYPE SYSTEM
+    # =====================================================
+    field_type: str = "unknown"
     validation_type: Optional[str] = None
 
-    @property
-    def is_numeric(self):
-        return self.field_type in ["integer", "number", "float"]
+    # =====================================================
+    # CONSTRAINTS
+    # =====================================================
+    required: bool = False
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
 
-    @property
-    def is_date(self):
-        return self.field_type in ["date", "datetime", "datetime_seconds", "datetime_ymd"]
+    # =====================================================
+    # CATEGORICAL
+    # =====================================================
+    choices: Optional[Dict[str, str]] = None
 
-    @property
-    def has_choices(self):
-        return bool(self.choices)
+    # =====================================================
+    # LOGIC
+    # =====================================================
+    branching_logic: Optional[str] = None
+
+    # =====================================================
+    # PRIVACY / GOVERNANCE
+    # =====================================================
+    is_pii: bool = False
+
+    # =====================================================
+    # METADATA
+    # =====================================================
+    field_note: Optional[str] = None
+    section_header: Optional[str] = None
+    field_annotation: Optional[str] = None
+
+    # =====================================================
+    # DERIVED CLASSIFICATIONS (AUTO-COMPUTED)
+    # =====================================================
 
     @property
     def is_system(self) -> bool:
+        """REDCap system/internal fields (record_id is NOT system, it's user-facing)"""
         return self.field_name in {
             "record_id",
             "redcap_event_name",
@@ -40,15 +68,300 @@ class FieldSchema:
             "user_dag_name",
         }
 
+    @property
+    def is_calculated(self) -> bool:
+        """Calculated fields should not be validated directly"""
+        return self.field_type == "calc"
+
+    @property
+    def is_checkbox(self) -> bool:
+        return self.field_type == "checkbox"
+
+    @property
+    def is_text(self) -> bool:
+        return self.field_type == "text"
+
+    @property
+    def is_required_for_qc(self) -> bool:
+        """Determines if this field should be validated"""
+        return not (self.is_system or self.is_calculated)
+
+    # =====================================================
+    # DATE/TIME VALIDATION TYPES
+    # =====================================================
+
+    @property
+    def date_format_category(self) -> Optional[str]:
+        """
+        Returns the category of date/time validation:
+        'date', 'datetime', 'datetime_seconds', 'time', 'time_seconds'
+        """
+        if not self.validation_type:
+            return None
+
+        val = self.validation_type.lower()
+
+        if val.startswith('datetime_seconds'):
+            return 'datetime_seconds'
+        elif val.startswith('datetime'):
+            return 'datetime'
+        elif val.startswith('date'):
+            return 'date'
+        elif val.startswith('time_seconds'):
+            return 'time_seconds'
+        elif val.startswith('time'):
+            return 'time'
+
+        return None
+
+    @property
+    def date_order(self) -> Optional[str]:
+        """
+        Returns the date order format:
+        'ymd' (Y-M-D), 'mdy' (M-D-Y), 'dmy' (D-M-Y)
+        """
+        if not self.validation_type:
+            return None
+
+        val = self.validation_type.lower()
+
+        if val.endswith('_ymd'):
+            return 'ymd'
+        elif val.endswith('_mdy'):
+            return 'mdy'
+        elif val.endswith('_dmy'):
+            return 'dmy'
+        elif val == 'date':
+            return 'ymd'
+        elif val == 'datetime':
+            return 'ymd'
+        elif val == 'datetime_seconds':
+            return 'ymd'
+
+        return None
+
+    @property
+    def date_format_string(self) -> Optional[str]:
+        """Returns Python datetime format string for validation"""
+        category = self.date_format_category
+        order = self.date_order
+
+        format_map = {
+            ('date', 'ymd'): "%Y-%m-%d",
+            ('date', 'mdy'): "%m/%d/%Y",
+            ('date', 'dmy'): "%d/%m/%Y",
+            ('date', None): "%Y-%m-%d",
+
+            ('datetime', 'ymd'): "%Y-%m-%d %H:%M",
+            ('datetime', 'mdy'): "%m/%d/%Y %H:%M",
+            ('datetime', 'dmy'): "%d/%m/%Y %H:%M",
+            ('datetime', None): "%Y-%m-%d %H:%M",
+
+            ('datetime_seconds', 'ymd'): "%Y-%m-%d %H:%M:%S",
+            ('datetime_seconds', 'mdy'): "%m/%d/%Y %H:%M:%S",
+            ('datetime_seconds', 'dmy'): "%d/%m/%Y %H:%M:%S",
+            ('datetime_seconds', None): "%Y-%m-%d %H:%M:%S",
+
+            ('time', None): "%H:%M",
+            ('time_seconds', None): "%H:%M:%S",
+        }
+
+        return format_map.get((category, order))
+
+    @property
+    def display_format_example(self) -> Optional[str]:
+        """Returns an example of the expected format for display"""
+        fmt = self.date_format_string
+        if not fmt:
+            return None
+
+        example_map = {
+            "%Y-%m-%d": "2024-01-15",
+            "%m/%d/%Y": "01/15/2024",
+            "%d/%m/%Y": "15/01/2024",
+            "%Y-%m-%d %H:%M": "2024-01-15 14:30",
+            "%m/%d/%Y %H:%M": "01/15/2024 14:30",
+            "%d/%m/%Y %H:%M": "15/01/2024 14:30",
+            "%Y-%m-%d %H:%M:%S": "2024-01-15 14:30:45",
+            "%m/%d/%Y %H:%M:%S": "01/15/2024 14:30:45",
+            "%d/%m/%Y %H:%M:%S": "15/01/2024 14:30:45",
+            "%H:%M": "14:30",
+            "%H:%M:%S": "14:30:45",
+        }
+
+        return example_map.get(fmt)
+
+    @property
+    def is_date(self) -> bool:
+        """Check if field is any date/datetime type"""
+        return self.date_format_category in ['date', 'datetime', 'datetime_seconds']
+
+    @property
+    def is_time(self) -> bool:
+        """Check if field is any time type"""
+        return self.date_format_category in ['time', 'time_seconds']
+
+    @property
+    def is_datetime(self) -> bool:
+        """Check if field includes both date and time"""
+        return self.date_format_category in ['datetime', 'datetime_seconds']
+
+    @property
+    def includes_seconds(self) -> bool:
+        """Check if field includes seconds"""
+        return self.date_format_category in ['datetime_seconds', 'time_seconds']
+
+    @property
+    def is_email(self) -> bool:
+        return self.validation_type == "email"
+
+    @property
+    def is_phone(self) -> bool:
+        return self.validation_type in ["phone", "phone_us"]
+
+    @property
+    def is_numeric(self) -> bool:
+        """Check if field represents a number (by field type or validation)"""
+        numeric_field_types = {"integer", "number", "float"}
+        numeric_validations = {"integer", "int", "number", "float", "decimal"}
+
+        result = (
+                self.field_type in numeric_field_types
+                or (self.validation_type and self.validation_type.lower() in numeric_validations)
+        )
+        return bool(result)
+
+    @property
+    def has_choices(self) -> bool:
+        return bool(self.choices)
+
+    @property
+    def has_range(self) -> bool:
+        return self.min_value is not None or self.max_value is not None
+
+    @property
+    def display_type(self) -> str:
+        """Human-readable display type with format example"""
+        if self.is_date:
+            order = self.date_order or 'ymd'
+            if self.date_format_category == 'datetime_seconds':
+                example = self.display_format_example or "YYYY-MM-DD HH:MM:SS"
+                if order == 'dmy':
+                    return f"datetime with seconds (DD/MM/YYYY HH:MM:SS) e.g., {example}"
+                elif order == 'mdy':
+                    return f"datetime with seconds (MM/DD/YYYY HH:MM:SS) e.g., {example}"
+                else:
+                    return f"datetime with seconds (YYYY-MM-DD HH:MM:SS) e.g., {example}"
+            elif self.date_format_category == 'datetime':
+                example = self.display_format_example or "YYYY-MM-DD HH:MM"
+                if order == 'dmy':
+                    return f"datetime (DD/MM/YYYY HH:MM) e.g., {example}"
+                elif order == 'mdy':
+                    return f"datetime (MM/DD/YYYY HH:MM) e.g., {example}"
+                else:
+                    return f"datetime (YYYY-MM-DD HH:MM) e.g., {example}"
+            else:
+                example = self.display_format_example or "YYYY-MM-DD"
+                if order == 'dmy':
+                    return f"date (DD/MM/YYYY) e.g., {example}"
+                elif order == 'mdy':
+                    return f"date (MM/DD/YYYY) e.g., {example}"
+                else:
+                    return f"date (YYYY-MM-DD) e.g., {example}"
+
+        if self.is_time:
+            if self.includes_seconds:
+                return f"time (HH:MM:SS) e.g., {self.display_format_example or '14:30:45'}"
+            return f"time (HH:MM) e.g., {self.display_format_example or '14:30'}"
+
+        if self.is_numeric:
+            return "numeric"
+        if self.has_choices:
+            return f"dropdown ({len(self.choices)} options)"
+        if self.is_email:
+            return "email"
+        if self.is_phone:
+            return "phone"
+        return self.field_type or "text"
+
+    def validate_date_string(self, value: str) -> Tuple[bool, Optional[str], Optional[datetime]]:
+        """Validate a date string against the field's date format"""
+        if not value:
+            return True, None, None
+
+        if not self.is_date:
+            return True, None, None
+
+        fmt = self.date_format_string
+        if not fmt:
+            return False, f"Unknown date format for validation type: {self.validation_type}", None
+
+        try:
+            dt = datetime.strptime(str(value), fmt)
+            return True, None, dt
+        except ValueError:
+            example = self.display_format_example or fmt
+            return False, f"Expected format: {example}", None
+
+    def validate_time_string(self, value: str) -> Tuple[bool, Optional[str], Optional[datetime]]:
+        """Validate a time string against the field's time format"""
+        if not value:
+            return True, None, None
+
+        if not self.is_time:
+            return True, None, None
+
+        fmt = self.date_format_string
+        if not fmt:
+            return False, f"Unknown time format for validation type: {self.validation_type}", None
+
+        try:
+            dt = datetime.strptime(str(value), fmt)
+            if fmt == "%H:%M" or fmt == "%H:%M:%S":
+                hours = int(str(value).split(':')[0])
+                if hours < 0 or hours > 23:
+                    return False, "Hours must be between 00 and 23", None
+            return True, None, dt
+        except ValueError:
+            example = self.display_format_example or fmt
+            return False, f"Expected format: {example}", None
+
+    def get_field_info(self) -> Dict[str, Any]:
+        """Comprehensive field information for debugging"""
+        return {
+            "field_name": self.field_name,
+            "field_type": self.field_type,
+            "validation_type": self.validation_type,
+            "display_type": self.display_type,
+            "display_format_example": self.display_format_example,
+            "is_required": self.required,
+            "is_numeric": self.is_numeric,
+            "is_date": self.is_date,
+            "is_time": self.is_time,
+            "is_datetime": self.is_datetime,
+            "includes_seconds": self.includes_seconds,
+            "date_format_category": self.date_format_category,
+            "date_order": self.date_order,
+            "date_format_string": self.date_format_string,
+            "has_choices": self.has_choices,
+            "has_range": self.has_range,
+            "is_calculated": self.is_calculated,
+            "is_system": self.is_system,
+            "is_pii": self.is_pii,
+            "min_value": self.min_value,
+            "max_value": self.max_value,
+            "choices_count": len(self.choices) if self.choices else 0,
+            "branching_logic_present": bool(self.branching_logic),
+        }
+
 
 class SafeEvaluator:
     """Safe evaluation of branching logic with date support"""
 
-    # Supported operators
     OPERATORS = {
         '==': operator.eq,
         '!=': operator.ne,
-        '<>': operator.ne,  # REDCap uses <> for not equal
+        '<>': operator.ne,
         '>': operator.gt,
         '>=': operator.ge,
         '<': operator.lt,
@@ -60,79 +373,108 @@ class SafeEvaluator:
     def __init__(self, schema: Dict[str, FieldSchema]):
         self.schema = schema
 
-    def parse_date(self, date_str: str) -> Optional[float]:
-        """Parse date string to timestamp for comparison"""
+    def parse_date(self, date_str: str, field_name: str = None) -> Optional[float]:
+        """Parse date string to timestamp for comparison with safe error handling"""
         if not date_str:
             return None
 
-        # Remove quotes if present
-        date_str = date_str.strip("'\"")
+        date_str = str(date_str).strip("'\"").strip()
 
-        # Common date formats in REDCap
+        # Skip invalid values
+        if not date_str or date_str.lower() in ['null', 'none', 'nan', '']:
+            return None
+
+        # Check for obviously weird dates (like 0000-00-00, 9999-99-99, etc.)
+        import re
+        if re.match(r'^0{4}[-\/]0{2}[-\/]0{2}', date_str):  # 0000-00-00
+            return None
+        if re.match(r'^9{4}[-\/]9{2}[-\/]9{2}', date_str):  # 9999-99-99
+            return None
+
+        if field_name and field_name in self.schema:
+            schema = self.schema[field_name]
+            if schema.date_format_string:
+                try:
+                    dt = datetime.strptime(date_str, schema.date_format_string)
+                    # Validate reasonable year range (1900-2100)
+                    if hasattr(dt, 'year') and (dt.year < 1900 or dt.year > 2100):
+                        return None  # Skip unreasonable dates
+                    return dt.timestamp()
+                except (ValueError, OSError, OverflowError):
+                    pass  # Continue to try other formats
+
         date_formats = [
-            "%Y-%m-%d",  # 2024-01-15
-            "%Y-%m-%d %H:%M:%S",  # 2024-01-15 14:30:00
-            "%m/%d/%Y",  # 01/15/2024
-            "%d/%m/%Y",  # 15/01/2024
-            "%Y-%m-%dT%H:%M:%S",  # 2024-01-15T14:30:00
+            "%Y-%m-%d",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%d %H:%M",
+            "%m/%d/%Y",
+            "%m/%d/%Y %H:%M:%S",
+            "%m/%d/%Y %H:%M",
+            "%d/%m/%Y",
+            "%d/%m/%Y %H:%M:%S",
+            "%d/%m/%Y %H:%M",
+            "%H:%M:%S",
+            "%H:%M",
         ]
 
         for fmt in date_formats:
             try:
                 dt = datetime.strptime(date_str, fmt)
+                # Validate reasonable year range
+                if hasattr(dt, 'year'):
+                    if dt.year < 1900 or dt.year > 2100:
+                        continue  # Skip unreasonable dates
                 return dt.timestamp()
-            except ValueError:
+            except (ValueError, OSError, OverflowError, TypeError):
                 continue
-
-        # Try date only
-        try:
-            dt = datetime.strptime(date_str[:10], "%Y-%m-%d")
-            return dt.timestamp()
-        except:
-            pass
 
         return None
 
     def calculate_datediff(self, date1: str, date2: str, unit: str, signed: int = 1) -> float:
-        """
-        Calculate difference between two dates (like REDCap's datediff)
+        """Calculate difference between two dates with safe error handling"""
+        # Handle None or invalid dates
+        if not date1 or not date2:
+            return 0
 
-        Args:
-            date1: First date string
-            date2: Second date string
-            unit: 'd' (days), 'm' (months), 'y' (years), 'h' (hours), 'mi' (minutes)
-            signed: 1 = return signed difference, 0 = return absolute difference
-        """
+        # Convert to string and clean
+        date1 = str(date1).strip()
+        date2 = str(date2).strip()
+
+        if not date1 or not date2:
+            return 0
+
         ts1 = self.parse_date(date1)
         ts2 = self.parse_date(date2)
 
         if ts1 is None or ts2 is None:
             return 0
 
-        diff_seconds = ts1 - ts2
-        diff_days = diff_seconds / 86400
+        try:
+            diff_seconds = ts1 - ts2
+            diff_days = diff_seconds / 86400
 
-        if unit == 'd':  # days
-            diff = diff_days
-        elif unit == 'm':  # months (approximate)
-            diff = diff_days / 30.44
-        elif unit == 'y':  # years (approximate)
-            diff = diff_days / 365.25
-        elif unit == 'h':  # hours
-            diff = diff_seconds / 3600
-        elif unit == 'mi':  # minutes
-            diff = diff_seconds / 60
-        else:
-            diff = diff_days
+            if unit == 'd':
+                diff = diff_days
+            elif unit == 'm':
+                diff = diff_days / 30.44
+            elif unit == 'y':
+                diff = diff_days / 365.25
+            elif unit == 'h':
+                diff = diff_seconds / 3600
+            elif unit == 'mi':
+                diff = diff_seconds / 60
+            else:
+                diff = diff_days
 
-        if signed == 0:
-            diff = abs(diff)
+            if signed == 0:
+                diff = abs(diff)
 
-        return diff
+            return diff
+        except (TypeError, OverflowError, ValueError):
+            return 0
 
     def tokenize(self, expression: str) -> List[str]:
         """Tokenize the logic expression"""
-        # Split on operators and parentheses while preserving them
         tokens = []
         current = ""
 
@@ -140,7 +482,6 @@ class SafeEvaluator:
         while i < len(expression):
             char = expression[i]
 
-            # Handle multi-character operators
             if i + 1 < len(expression) and expression[i:i + 2] in ['>=', '<=', '==', '!=', '<>']:
                 if current.strip():
                     tokens.append(current.strip())
@@ -149,7 +490,6 @@ class SafeEvaluator:
                 i += 2
                 continue
 
-            # Handle single-character operators and parentheses
             if char in '()':
                 if current.strip():
                     tokens.append(current.strip())
@@ -166,7 +506,6 @@ class SafeEvaluator:
                 i += 1
                 continue
 
-            # Handle spaces as separators
             if char == ' ':
                 if current.strip():
                     tokens.append(current.strip())
@@ -187,9 +526,7 @@ class SafeEvaluator:
         if not tokens:
             return None
 
-        # Handle parentheses recursively
         while '(' in tokens:
-            # Find matching parentheses
             open_idx = None
             close_idx = None
 
@@ -201,61 +538,43 @@ class SafeEvaluator:
                     break
 
             if open_idx is not None and close_idx is not None:
-                # Evaluate expression inside parentheses
                 inner_tokens = tokens[open_idx + 1:close_idx]
                 inner_result = self.parse_tokens(inner_tokens)
-
-                # Replace parentheses and their content with result
                 tokens = tokens[:open_idx] + [str(inner_result)] + tokens[close_idx + 1:]
 
-        # Evaluate comparison operators (>, <, >=, <=, ==, !=, <>)
         for op in ['>=', '<=', '==', '!=', '<>', '>', '<']:
             while op in tokens:
                 idx = tokens.index(op)
                 left = self._evaluate_comparand(tokens[idx - 1])
                 right = self._evaluate_comparand(tokens[idx + 1])
-
                 result = self.OPERATORS[op](left, right)
-
                 tokens = tokens[:idx - 1] + [str(result)] + tokens[idx + 2:]
 
-        # Evaluate 'and' operators (left-associative)
         while 'and' in tokens:
             idx = tokens.index('and')
             left = self._parse_value(tokens[idx - 1])
             right = self._parse_value(tokens[idx + 1])
-
             result = left and right
-
             tokens = tokens[:idx - 1] + [str(result)] + tokens[idx + 2:]
 
-        # Evaluate 'or' operators (left-associative)
         while 'or' in tokens:
             idx = tokens.index('or')
             left = self._parse_value(tokens[idx - 1])
             right = self._parse_value(tokens[idx + 1])
-
             result = left or right
-
             tokens = tokens[:idx - 1] + [str(result)] + tokens[idx + 2:]
 
-        # Return final value
         if len(tokens) == 1:
             return self._parse_value(tokens[0])
 
         return None
 
     def _evaluate_comparand(self, token: str) -> Any:
-        """Evaluate a value for comparison"""
-        # Check if it's a datediff function
         if token.startswith('datediff('):
             return self._evaluate_datediff(token)
-
         return self._parse_value(token)
 
     def _evaluate_datediff(self, datediff_str: str) -> float:
-        """Evaluate datediff function"""
-        # Parse: datediff([date1], [date2], 'unit', signed)
         match = re.match(r'datediff\(([^,]+),\s*([^,]+),\s*\'([^\']+)\',\s*(\d+)\)', datediff_str)
         if not match:
             return 0
@@ -265,43 +584,29 @@ class SafeEvaluator:
         unit = match.group(3)
         signed = int(match.group(4))
 
-        # Extract field names or values
         date1 = self._extract_value(date1_expr)
         date2 = self._extract_value(date2_expr)
 
         return self.calculate_datediff(date1, date2, unit, signed)
 
     def _extract_value(self, expr: str) -> str:
-        """Extract value from field reference or literal"""
         expr = expr.strip()
-
-        # Check if it's a field reference [field_name]
         field_match = re.match(r'\[([^\]]+)\]', expr)
         if field_match:
-            # This should be replaced with actual record value during evaluation
-            # For now, return the field name as placeholder
             return f"__FIELD__{field_match.group(1)}"
-
-        # Remove quotes
         return expr.strip("'\"")
 
     def _parse_value(self, token: str) -> Any:
-        """Parse a token into its actual value"""
         token = token.strip()
 
-        # Boolean values
         if token.lower() == 'true':
             return True
         if token.lower() == 'false':
             return False
-
-        # None/Null
         if token.lower() in ['null', 'none']:
             return None
 
-        # Numbers (including negative and decimal)
         try:
-            # Check if it's a number (including negative)
             if re.match(r'^-?\d+(?:\.\d+)?$', token):
                 if '.' in token:
                     return float(token)
@@ -309,13 +614,11 @@ class SafeEvaluator:
         except ValueError:
             pass
 
-        # Date (check if it looks like a date or timestamp)
         if re.match(r'\d{4}-\d{2}-\d{2}', token) or re.match(r'\d{2}/\d{2}/\d{4}', token):
             timestamp = self.parse_date(token)
             if timestamp is not None:
                 return timestamp
 
-        # String (remove quotes if present)
         if (token.startswith("'") and token.endswith("'")) or (token.startswith('"') and token.endswith('"')):
             return token[1:-1]
 
@@ -326,65 +629,39 @@ class SafeEvaluator:
         if not logic or not logic.strip():
             return True
 
-        # Replace field references with actual values from record
         processed_logic = logic
 
-        # FIRST: Convert date literals in the logic to timestamps
-        date_literals = re.findall(r"['\"]([0-9]{4}-[0-9]{2}-[0-9]{2})['\"]", processed_logic)
+        # Convert date literals to timestamps
+        date_literals = re.findall(r"['\"]([0-9]{4}-[0-9]{2}-[0-9]{2}[^'\"]*)['\"]", processed_logic)
         for date_literal in date_literals:
             timestamp = self.parse_date(date_literal)
             if timestamp is not None:
                 processed_logic = processed_logic.replace(f"'{date_literal}'", str(timestamp))
                 processed_logic = processed_logic.replace(f'"{date_literal}"', str(timestamp))
 
-        # THEN: Find all field references [field_name]
+        # Replace field references
         field_refs = re.findall(r'\[([^\]]+)\]', logic)
 
         for field_ref in field_refs:
             value = record.get(field_ref)
             schema = self.schema.get(field_ref)
 
-            # Treat empty strings as None for date fields
-            if value == "" and schema and schema.is_date:
-                value_repr = "None"
-            elif value is None:
+            # Handle empty/None values
+            if value is None or value == "":
                 value_repr = "None"
             elif schema and schema.is_date:
-                # For date fields, convert to timestamp
-                timestamp = self.parse_date(str(value))
-                if timestamp is not None:
-                    value_repr = str(timestamp)
-                else:
-                    value_repr = "None"  # Invalid date becomes None
+                timestamp = self.parse_date(str(value), field_ref)
+                value_repr = str(timestamp) if timestamp is not None else "None"
             elif schema and schema.is_numeric:
-                # For numeric fields, convert to number (no quotes)
                 try:
-                    if value == "":
-                        value_repr = "None"
-                    else:
-                        num_value = float(value)
-                        if num_value.is_integer():
-                            value_repr = str(int(num_value))
-                        else:
-                            value_repr = str(num_value)
+                    num_value = float(value)
+                    value_repr = str(int(num_value)) if num_value.is_integer() else str(num_value)
                 except (ValueError, TypeError):
                     value_repr = "None"
             elif isinstance(value, str):
-                if value == "":
-                    # Empty string - treat as None for comparison purposes
-                    value_repr = "None"
-                else:
-                    # Try to convert to number if it looks like one
-                    try:
-                        float_val = float(value)
-                        if float_val.is_integer():
-                            value_repr = str(int(float_val))
-                        else:
-                            value_repr = str(float_val)
-                    except (ValueError, TypeError):
-                        # Not a number, keep as string with quotes
-                        escaped_value = value.replace("'", "\\'")
-                        value_repr = f"'{escaped_value}'"
+                # Keep as string with quotes
+                escaped_value = value.replace("'", "\\'")
+                value_repr = f"'{escaped_value}'"
             elif isinstance(value, (int, float)):
                 value_repr = str(value)
             elif isinstance(value, bool):
@@ -394,15 +671,27 @@ class SafeEvaluator:
 
             processed_logic = processed_logic.replace(f'[{field_ref}]', value_repr)
 
-        # Handle "is not null" and "is null" expressions (these become "is not None" and "is None")
+        # Handle REDCap-specific syntax
         processed_logic = processed_logic.replace("is not null", "is not None")
         processed_logic = processed_logic.replace("is null", "is None")
-
-        # Handle "in" operator
         processed_logic = re.sub(r'(\w+)\s+in\s+\(([^)]+)\)', r'\1 in (\2)', processed_logic)
 
-        # Handle "=" operator (convert to "==" for Python)
-        processed_logic = re.sub(r'(?<![<>!])=(?!=)', '==', processed_logic)
+        # Handle operator conversion - CRITICAL FIX
+        # First, protect multi-character operators with placeholders
+        processed_logic = processed_logic.replace('<=', '☃LE☃')
+        processed_logic = processed_logic.replace('>=', '☃GE☃')
+        processed_logic = processed_logic.replace('!=', '☃NE☃')
+        processed_logic = processed_logic.replace('<>', '☃NE☃')
+        processed_logic = processed_logic.replace('==', '☃EQ☃')
+
+        # Replace standalone = with ==
+        processed_logic = re.sub(r'(?<![<>!])=(?![=>])', '==', processed_logic)
+
+        # Restore protected operators
+        processed_logic = processed_logic.replace('☃EQ☃', '==')
+        processed_logic = processed_logic.replace('☃NE☃', '!=')
+        processed_logic = processed_logic.replace('☃LE☃', '<=')
+        processed_logic = processed_logic.replace('☃GE☃', '>=')
 
         # Handle datediff functions
         datediff_pattern = r"datediff\(([^,]+),\s*([^,]+),\s*'([^']+)',\s*(\d+)\)"
@@ -413,26 +702,21 @@ class SafeEvaluator:
             unit = match.group(3)
             signed = int(match.group(4))
 
-            # Extract values from field references
             date1_match = re.search(r'\[([^\]]+)\]', date1_expr)
             date2_match = re.search(r'\[([^\]]+)\]', date2_expr)
 
             if date1_match:
                 date1_value = record.get(date1_match.group(1))
-                # Handle empty string as None
-                if date1_value == "":
-                    date1_value = None
+                date1_value = None if not date1_value else date1_value
             else:
                 date1_value = date1_expr.strip("'\"")
 
             if date2_match:
                 date2_value = record.get(date2_match.group(1))
-                if date2_value == "":
-                    date2_value = None
+                date2_value = None if not date2_value else date2_value
             else:
                 date2_value = date2_expr.strip("'\"")
 
-            # Calculate datediff only if both dates are valid
             if date1_value and date2_value:
                 try:
                     result = self.calculate_datediff(str(date1_value), str(date2_value), unit, signed)
@@ -443,8 +727,10 @@ class SafeEvaluator:
 
         processed_logic = re.sub(datediff_pattern, replace_datediff, processed_logic)
 
-        # Suppress syntax warnings
-        import warnings
+        # If there's a None in a comparison, return False
+        if re.search(r'None\s*[=<>!]+', processed_logic) and 'datediff' not in processed_logic:
+            return False
+
         warnings.filterwarnings("ignore", category=SyntaxWarning)
 
         try:
@@ -456,10 +742,9 @@ class SafeEvaluator:
             }
             result = eval(processed_logic, safe_globals, {})
             return bool(result)
-        except Exception as e:
-            print(f"Evaluation error: {e}")
-            print(f"Logic: {processed_logic}")
-            return True
+        except Exception:
+            # For any evaluation error, return False
+            return False
 
 
 class ValidationEngine:
@@ -470,18 +755,15 @@ class ValidationEngine:
         self.evaluator = SafeEvaluator(schema)
 
     def _evaluate_branching_logic(self, logic: str, record: Dict[str, Any]) -> bool:
-        """Evaluate branching logic using SafeEvaluator"""
         return self.evaluator.evaluate(logic, record)
 
     def is_field_applicable(self, field_name: str, record: Dict[str, Any]) -> bool:
-        """Check if field is applicable"""
         schema = self.schema.get(field_name)
         if not schema or not schema.branching_logic:
             return True
         return self._evaluate_branching_logic(schema.branching_logic, record)
 
     def validate_record(self, record: Dict[str, Any], record_id: str = None) -> Dict[str, Any]:
-        """Validate a single record"""
         issues = []
 
         # Evaluate branching logic for all fields
@@ -496,13 +778,13 @@ class ValidationEngine:
             if not schema:
                 continue
 
-            if schema.is_system:
+            if not schema.is_required_for_qc:
                 continue
 
             if field_name not in applicable_fields:
                 continue
 
-            # Required field check
+            # REQUIRED CHECK FIRST - even if value is empty
             if schema.required and (value is None or value == ''):
                 issues.append({
                     'field_name': field_name,
@@ -513,10 +795,39 @@ class ValidationEngine:
                 })
                 continue
 
+            # Skip further validation for empty values (non-required fields)
             if not value:
                 continue
 
-            # Data type check
+            # Date validation
+            if schema.is_date:
+                is_valid, error_msg, _ = schema.validate_date_string(str(value))
+                if not is_valid:
+                    issues.append({
+                        'field_name': field_name,
+                        'severity': 'error',
+                        'rule_name': 'date_format',
+                        'message': f"Invalid date format: {error_msg}",
+                        'actual_value': value,
+                        'expected_value': schema.display_format_example,
+                    })
+                    continue
+
+            # Time validation
+            if schema.is_time:
+                is_valid, error_msg, _ = schema.validate_time_string(str(value))
+                if not is_valid:
+                    issues.append({
+                        'field_name': field_name,
+                        'severity': 'error',
+                        'rule_name': 'time_format',
+                        'message': f"Invalid time format: {error_msg}",
+                        'actual_value': value,
+                        'expected_value': schema.display_format_example,
+                    })
+                    continue
+
+            # Numeric validation
             if schema.is_numeric:
                 try:
                     float(value)
@@ -530,8 +841,8 @@ class ValidationEngine:
                     })
                     continue
 
-            # Range check (numeric only)
-            if schema.is_numeric:
+            # Range validation
+            if schema.is_numeric and schema.has_range:
                 try:
                     num = float(value)
                     if schema.min_value is not None and num < schema.min_value:
@@ -543,7 +854,6 @@ class ValidationEngine:
                             'actual_value': value,
                             'expected_value': f">= {schema.min_value}",
                         })
-
                     if schema.max_value is not None and num > schema.max_value:
                         issues.append({
                             'field_name': field_name,
@@ -556,7 +866,7 @@ class ValidationEngine:
                 except:
                     pass
 
-            # Choices check
+            # Choices validation
             if schema.has_choices and str(value) not in schema.choices:
                 issues.append({
                     'field_name': field_name,
@@ -567,9 +877,10 @@ class ValidationEngine:
                     'expected_value': f"One of: {', '.join(list(schema.choices.keys())[:5])}",
                 })
 
-            # Email format check
-            if schema.validation_type == 'email':
-                if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', str(value)):
+            # Email validation
+            if schema.is_email:
+                email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                if not re.match(email_pattern, str(value)):
                     issues.append({
                         'field_name': field_name,
                         'severity': 'warning',
@@ -588,7 +899,6 @@ class ValidationEngine:
         }
 
     def validate_records(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Validate multiple records"""
         results = []
         for record in records:
             record_id = record.get('record_id', 'unknown')
@@ -608,14 +918,25 @@ class DictionaryLoader:
             if not field_name:
                 continue
 
+            validation_type = row.get("Text Validation Type", "")
+            if validation_type and validation_type.startswith("text_"):
+                validation_type = validation_type[5:]
+
             schema[field_name] = FieldSchema(
                 field_name=field_name,
-                field_type=row.get("Field Type", "text"),
+                form_name=row.get("Form Name"),
+                field_label=row.get("Field Label"),
+                field_type=row.get("Field Type", "unknown"),
+                validation_type=validation_type,
                 required=row.get("Required Field?", "").lower() in ["yes", "y", "1"],
                 min_value=DictionaryLoader._to_float(row.get("Text Validation Min")),
                 max_value=DictionaryLoader._to_float(row.get("Text Validation Max")),
-                validation_type=row.get("Text Validation Type"),
                 choices=DictionaryLoader._parse_choices(row.get("Choices, Calculations, OR Slider Labels")),
+                branching_logic=row.get("Branching Logic (Show field only if...)"),
+                is_pii=row.get("Identifier?", "").lower() in ["yes", "y", "1"],
+                field_note=row.get("Field Note"),
+                section_header=row.get("Section Header"),
+                field_annotation=row.get("Field Annotation"),
             )
 
         return schema

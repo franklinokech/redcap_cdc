@@ -65,6 +65,11 @@ DB + Logs
 ### Data Quality
 - Schema ingestion
 - Validation engine
+  - Validate form logic using redcap xml parser
+  - Add record checking start date for each field to cater for Historical changes, we can check when it was first non empty and reference a timestamp field
+  - How do we handle false positive for repeating instruments? 
+    - We can propage data from parent to children and children to parent to fill in gaps in flat file from api
+    - We need to remove duplicates reporting to reduce false positives
 - Record checker
 - Django integration
 
